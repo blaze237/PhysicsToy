@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "D:\\Projects\\PhysicsToy\\PhysicsSansbox\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{BCA73E5B-FEF6-4936-B93F-363F0B20369C}|PhysicsSansbox\\PhysicsSansbox.csproj|d:\\projects\\physicstoy\\physicssansbox\\physicssansbox\\tilerender\\tilerenderer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BCA73E5B-FEF6-4936-B93F-363F0B20369C}|PhysicsSansbox\\PhysicsSansbox.csproj|solutionrelative:physicssansbox\\tilerender\\tilerenderer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{BCA73E5B-FEF6-4936-B93F-363F0B20369C}|PhysicsSansbox\\PhysicsSansbox.csproj|d:\\projects\\physicstoy\\physicssansbox\\physicssansbox\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{BCA73E5B-FEF6-4936-B93F-363F0B20369C}|PhysicsSansbox\\PhysicsSansbox.csproj|solutionrelative:physicssansbox\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -14,21 +18,35 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
-            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "TileRenderer.cs",
+              "DocumentMoniker": "D:\\Projects\\PhysicsToy\\PhysicsSansbox\\PhysicsSansbox\\TileRender\\TileRenderer.cs",
+              "RelativeDocumentMoniker": "PhysicsSansbox\\TileRender\\TileRenderer.cs",
+              "ToolTip": "D:\\Projects\\PhysicsToy\\PhysicsSansbox\\PhysicsSansbox\\TileRender\\TileRenderer.cs",
+              "RelativeToolTip": "PhysicsSansbox\\TileRender\\TileRenderer.cs",
+              "ViewState": "AgIAAEUAAAAAAAAAAAAAABkAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-14T23:30:34.547Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\Projects\\PhysicsToy\\PhysicsSansbox\\PhysicsSansbox\\Program.cs",
               "RelativeDocumentMoniker": "PhysicsSansbox\\Program.cs",
               "ToolTip": "D:\\Projects\\PhysicsToy\\PhysicsSansbox\\PhysicsSansbox\\Program.cs",
               "RelativeToolTip": "PhysicsSansbox\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAAFAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAA4AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-02-14T14:48:41.794Z",
               "EditorCaption": ""

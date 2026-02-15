@@ -1,15 +1,21 @@
 ﻿using Raylib_cs;
 using static Raylib_cs.Raylib;
 using static Raylib_cs.Color;
+using PhysicsSansbox.TileRender;
 
 class Program
 {
+    const int c_screenWidth = 1000;
+    const int c_screenHeight = 1000;
+
+
+
     static void Main()
     {
-        const int screenWidth = 800;
-        const int screenHeight = 600;
+        TileRenderer m_tileRenderer = new TileRenderer(200, c_screenWidth, c_screenHeight);
 
-        InitWindow(screenWidth, screenHeight, "Raylib C# Sandbox");
+
+        InitWindow(c_screenWidth, c_screenHeight, "Raylib C# Sandbox");
         SetTargetFPS(60);
 
         while (!WindowShouldClose())
@@ -17,7 +23,8 @@ class Program
             BeginDrawing();
             ClearBackground(Raylib_cs.Color.Black);
 
-            DrawText("It works!", 320, 280, 20, Raylib_cs.Color.RayWhite);
+            m_tileRenderer.Render(Raylib.GetFrameTime());
+
 
             EndDrawing();
         }
