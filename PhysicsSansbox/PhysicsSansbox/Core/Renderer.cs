@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace PhysicsSansbox.Core;
 
-namespace PhysicsSansbox
-{
 internal abstract class Renderer
 {
     //-------------------
@@ -16,7 +10,7 @@ internal abstract class Renderer
     {
         RenderImpl(i_alpha);
 
-        foreach(RenderableObject renderable in m_renderableOjects)
+        foreach (RenderableObject renderable in m_renderableOjects)
         {
             renderable.Render(i_alpha);
         }
@@ -37,5 +31,4 @@ internal abstract class Renderer
 
     //Members
     private List<RenderableObject> m_renderableOjects = new List<RenderableObject>();
-}
 }

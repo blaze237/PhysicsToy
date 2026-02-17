@@ -1,9 +1,6 @@
-﻿using Raylib_cs;
-using static Raylib_cs.Raylib;
-using static Raylib_cs.Color;
-using PhysicsSansbox.TileRender;
-using PhysicsSansbox;
+﻿using PhysicsSansbox.Core;
 using PhysicsSansbox.PathfindTester;
+using static Raylib_cs.Raylib;
 
 class Program
 {
@@ -19,7 +16,7 @@ class Program
 
 
         InitWindow(c_screenWidth, c_screenHeight, "Raylib C# Sandbox");
-        SetTargetFPS(60);
+       // SetTargetFPS(60);
 
         while (!WindowShouldClose())
         {
@@ -32,7 +29,7 @@ class Program
             while (timeAccumulator >= c_fixedTimeStep)
             {
                 timeAccumulator -= c_fixedTimeStep;
-                world._FixedUpdate(c_fixedTimeStep); 
+                world._FixedUpdate(c_fixedTimeStep);
             }
             float alpha = (float)(timeAccumulator / c_fixedTimeStep);
 
@@ -43,7 +40,7 @@ class Program
 
             //Render
             BeginDrawing();
-            ClearBackground(Raylib_cs.Color.Black);
+            ClearBackground(Raylib_cs.Color.Black); //Should the renderer handle this
             world.Render(alpha);
             EndDrawing();
         }
