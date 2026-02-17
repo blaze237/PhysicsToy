@@ -77,7 +77,7 @@ class TileRenderer : Renderer
     }
 
     //-------------------------------
-    public void Render
+    public override void RenderImpl
     (
         float i_dt
     )
@@ -89,12 +89,12 @@ class TileRenderer : Renderer
                 Raylib.DrawRectangle(x * TileSize, y * TileSize, TileSize, TileSize, GetTileColour(x, y));
 
                 //Debug test only
-                m_tiles[Index(x, y)].TimeSinceColourChange += i_dt;
-                if (m_tiles[Index(x, y)].TimeSinceColourChange >= Tile.c_colourChangeTime)
-                {
-                    m_tiles[Index(x, y)].RandomizeColour();
-                    m_tiles[Index(x, y)].TimeSinceColourChange = 0f;
-                }
+                //m_tiles[Index(x, y)].TimeSinceColourChange += i_dt;
+                //if (m_tiles[Index(x, y)].TimeSinceColourChange >= Tile.c_colourChangeTime)
+                //{
+                //    m_tiles[Index(x, y)].RandomizeColour();
+                //    m_tiles[Index(x, y)].TimeSinceColourChange = 0f;
+                //}
             }
         }
     }

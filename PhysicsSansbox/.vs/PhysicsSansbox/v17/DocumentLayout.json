@@ -3,28 +3,32 @@
   "WorkspaceRootPath": "D:\\Projects\\PhysicsToy\\PhysicsSansbox\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{BCA73E5B-FEF6-4936-B93F-363F0B20369C}|PhysicsSansbox\\PhysicsSansbox.csproj|d:\\projects\\physicstoy\\physicssansbox\\physicssansbox\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BCA73E5B-FEF6-4936-B93F-363F0B20369C}|PhysicsSansbox\\PhysicsSansbox.csproj|solutionrelative:physicssansbox\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BCA73E5B-FEF6-4936-B93F-363F0B20369C}|PhysicsSansbox\\PhysicsSansbox.csproj|d:\\projects\\physicstoy\\physicssansbox\\physicssansbox\\logicmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BCA73E5B-FEF6-4936-B93F-363F0B20369C}|PhysicsSansbox\\PhysicsSansbox.csproj|solutionrelative:physicssansbox\\logicmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BCA73E5B-FEF6-4936-B93F-363F0B20369C}|PhysicsSansbox\\PhysicsSansbox.csproj|d:\\projects\\physicstoy\\physicssansbox\\physicssansbox\\pathfindtester\\pathfindworld.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BCA73E5B-FEF6-4936-B93F-363F0B20369C}|PhysicsSansbox\\PhysicsSansbox.csproj|solutionrelative:physicssansbox\\pathfindtester\\pathfindworld.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BCA73E5B-FEF6-4936-B93F-363F0B20369C}|PhysicsSansbox\\PhysicsSansbox.csproj|d:\\projects\\physicstoy\\physicssansbox\\physicssansbox\\tilerender\\tilerenderer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BCA73E5B-FEF6-4936-B93F-363F0B20369C}|PhysicsSansbox\\PhysicsSansbox.csproj|solutionrelative:physicssansbox\\tilerender\\tilerenderer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{BCA73E5B-FEF6-4936-B93F-363F0B20369C}|PhysicsSansbox\\PhysicsSansbox.csproj|d:\\projects\\physicstoy\\physicssansbox\\physicssansbox\\world.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BCA73E5B-FEF6-4936-B93F-363F0B20369C}|PhysicsSansbox\\PhysicsSansbox.csproj|solutionrelative:physicssansbox\\world.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{BCA73E5B-FEF6-4936-B93F-363F0B20369C}|PhysicsSansbox\\PhysicsSansbox.csproj|d:\\projects\\physicstoy\\physicssansbox\\physicssansbox\\renderer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{BCA73E5B-FEF6-4936-B93F-363F0B20369C}|PhysicsSansbox\\PhysicsSansbox.csproj|solutionrelative:physicssansbox\\renderer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{BCA73E5B-FEF6-4936-B93F-363F0B20369C}|PhysicsSansbox\\PhysicsSansbox.csproj|d:\\projects\\physicstoy\\physicssansbox\\physicssansbox\\worldbuilder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BCA73E5B-FEF6-4936-B93F-363F0B20369C}|PhysicsSansbox\\PhysicsSansbox.csproj|solutionrelative:physicssansbox\\worldbuilder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{BCA73E5B-FEF6-4936-B93F-363F0B20369C}|PhysicsSansbox\\PhysicsSansbox.csproj|d:\\projects\\physicstoy\\physicssansbox\\physicssansbox\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BCA73E5B-FEF6-4936-B93F-363F0B20369C}|PhysicsSansbox\\PhysicsSansbox.csproj|solutionrelative:physicssansbox\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BCA73E5B-FEF6-4936-B93F-363F0B20369C}|PhysicsSansbox\\PhysicsSansbox.csproj|d:\\projects\\physicstoy\\physicssansbox\\physicssansbox\\pathfindtester\\pathfindworld.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BCA73E5B-FEF6-4936-B93F-363F0B20369C}|PhysicsSansbox\\PhysicsSansbox.csproj|solutionrelative:physicssansbox\\pathfindtester\\pathfindworld.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BCA73E5B-FEF6-4936-B93F-363F0B20369C}|PhysicsSansbox\\PhysicsSansbox.csproj|d:\\projects\\physicstoy\\physicssansbox\\physicssansbox\\logicmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BCA73E5B-FEF6-4936-B93F-363F0B20369C}|PhysicsSansbox\\PhysicsSansbox.csproj|solutionrelative:physicssansbox\\logicmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BCA73E5B-FEF6-4936-B93F-363F0B20369C}|PhysicsSansbox\\PhysicsSansbox.csproj|d:\\projects\\physicstoy\\physicssansbox\\physicssansbox\\tilerender\\tilerenderer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BCA73E5B-FEF6-4936-B93F-363F0B20369C}|PhysicsSansbox\\PhysicsSansbox.csproj|solutionrelative:physicssansbox\\tilerender\\tilerenderer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BCA73E5B-FEF6-4936-B93F-363F0B20369C}|PhysicsSansbox\\PhysicsSansbox.csproj|d:\\projects\\physicstoy\\physicssansbox\\physicssansbox\\renderableobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BCA73E5B-FEF6-4936-B93F-363F0B20369C}|PhysicsSansbox\\PhysicsSansbox.csproj|solutionrelative:physicssansbox\\renderableobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{BCA73E5B-FEF6-4936-B93F-363F0B20369C}|PhysicsSansbox\\PhysicsSansbox.csproj|d:\\projects\\physicstoy\\physicssansbox\\physicssansbox\\physicssansbox.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
@@ -42,17 +46,16 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "TileRenderer.cs",
               "DocumentMoniker": "D:\\Projects\\PhysicsToy\\PhysicsSansbox\\PhysicsSansbox\\TileRender\\TileRenderer.cs",
               "RelativeDocumentMoniker": "PhysicsSansbox\\TileRender\\TileRenderer.cs",
               "ToolTip": "D:\\Projects\\PhysicsToy\\PhysicsSansbox\\PhysicsSansbox\\TileRender\\TileRenderer.cs",
               "RelativeToolTip": "PhysicsSansbox\\TileRender\\TileRenderer.cs",
-              "ViewState": "AgIAADEAAAAAAAAAAAAswFsAAABCAAAAAAAAAA==",
+              "ViewState": "AgIAAD8AAAAAAAAAAAAAAGQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-02-14T23:30:34.547Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Bookmark",
@@ -60,78 +63,89 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 6,
+              "Title": "RenderableObject.cs",
+              "DocumentMoniker": "D:\\Projects\\PhysicsToy\\PhysicsSansbox\\PhysicsSansbox\\RenderableObject.cs",
+              "RelativeDocumentMoniker": "PhysicsSansbox\\RenderableObject.cs",
+              "ToolTip": "D:\\Projects\\PhysicsToy\\PhysicsSansbox\\PhysicsSansbox\\RenderableObject.cs",
+              "RelativeToolTip": "PhysicsSansbox\\RenderableObject.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-15T21:03:09.036Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "PathfindWorld.cs",
               "DocumentMoniker": "D:\\Projects\\PhysicsToy\\PhysicsSansbox\\PhysicsSansbox\\PathfindTester\\PathfindWorld.cs",
               "RelativeDocumentMoniker": "PhysicsSansbox\\PathfindTester\\PathfindWorld.cs",
               "ToolTip": "D:\\Projects\\PhysicsToy\\PhysicsSansbox\\PhysicsSansbox\\PathfindTester\\PathfindWorld.cs",
               "RelativeToolTip": "PhysicsSansbox\\PathfindTester\\PathfindWorld.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAACEAAAAAAAAAAAAgwE8AAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-02-15T15:19:24.248Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "PhysicsSansbox",
+              "DocumentIndex": 7,
+              "Title": "PhysicsSansbox.csproj",
               "DocumentMoniker": "D:\\Projects\\PhysicsToy\\PhysicsSansbox\\PhysicsSansbox\\PhysicsSansbox.csproj",
               "RelativeDocumentMoniker": "PhysicsSansbox\\PhysicsSansbox.csproj",
               "ToolTip": "D:\\Projects\\PhysicsToy\\PhysicsSansbox\\PhysicsSansbox\\PhysicsSansbox.csproj",
               "RelativeToolTip": "PhysicsSansbox\\PhysicsSansbox.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2026-02-15T15:00:45.791Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-15T15:00:45.791Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "LogicManager.cs",
               "DocumentMoniker": "D:\\Projects\\PhysicsToy\\PhysicsSansbox\\PhysicsSansbox\\LogicManager.cs",
               "RelativeDocumentMoniker": "PhysicsSansbox\\LogicManager.cs",
               "ToolTip": "D:\\Projects\\PhysicsToy\\PhysicsSansbox\\PhysicsSansbox\\LogicManager.cs",
               "RelativeToolTip": "PhysicsSansbox\\LogicManager.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-02-15T15:03:12.942Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 1,
               "Title": "Renderer.cs",
               "DocumentMoniker": "D:\\Projects\\PhysicsToy\\PhysicsSansbox\\PhysicsSansbox\\Renderer.cs",
               "RelativeDocumentMoniker": "PhysicsSansbox\\Renderer.cs",
               "ToolTip": "D:\\Projects\\PhysicsToy\\PhysicsSansbox\\PhysicsSansbox\\Renderer.cs",
               "RelativeToolTip": "PhysicsSansbox\\Renderer.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAASAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-02-15T15:00:57.134Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "WorldBuilder.cs",
-              "DocumentMoniker": "D:\\Projects\\PhysicsToy\\PhysicsSansbox\\PhysicsSansbox\\WorldBuilder.cs",
-              "RelativeDocumentMoniker": "PhysicsSansbox\\WorldBuilder.cs",
-              "ToolTip": "D:\\Projects\\PhysicsToy\\PhysicsSansbox\\PhysicsSansbox\\WorldBuilder.cs",
-              "RelativeToolTip": "PhysicsSansbox\\WorldBuilder.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "World.cs",
+              "DocumentMoniker": "D:\\Projects\\PhysicsToy\\PhysicsSansbox\\PhysicsSansbox\\World.cs",
+              "RelativeDocumentMoniker": "PhysicsSansbox\\World.cs",
+              "ToolTip": "D:\\Projects\\PhysicsToy\\PhysicsSansbox\\PhysicsSansbox\\World.cs",
+              "RelativeToolTip": "PhysicsSansbox\\World.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADYAAAAlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-02-15T14:43:48.106Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\Projects\\PhysicsToy\\PhysicsSansbox\\PhysicsSansbox\\Program.cs",
               "RelativeDocumentMoniker": "PhysicsSansbox\\Program.cs",
               "ToolTip": "D:\\Projects\\PhysicsToy\\PhysicsSansbox\\PhysicsSansbox\\Program.cs",
               "RelativeToolTip": "PhysicsSansbox\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAC8AAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAcwC4AAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-02-14T14:48:41.794Z",
               "EditorCaption": ""

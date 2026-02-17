@@ -8,7 +8,7 @@ namespace PhysicsSansbox
 {
 internal interface LogicManager
 {
-    void FixedUpdate();
-
+    void FixedUpdate(float i_fixedDeltaTime);
+    void Update(float i_deltaTime);
 }
 }

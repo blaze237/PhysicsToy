@@ -1,4 +1,5 @@
 ﻿using PhysicsSansbox.TileRender;
+using Raylib_cs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,27 +8,81 @@ using System.Threading.Tasks;
 
 namespace PhysicsSansbox.PathfindTester
 {
-    internal class PathfindWorld : WorldBuilder
+    internal class PathfindWorld : World
     {
         //-----------------------
-        public void BuildWorld
-        (
-            out Renderer o_renderer,
-            out List<LogicManager> o_managers
-        )
+        public PathfindWorld() 
         {
-            o_renderer = new TileRenderer(25, Program.c_screenWidth, Program.c_screenHeight);
-            o_managers = new List<LogicManager>();
         }
 
         //-----------------------
-        public void DestroyWorld
+        public override Renderer CreateRenderer
         (
-            Renderer o_renderer,
-            List<LogicManager> o_managers
+        )
+        {
+            return new TileRenderer(25, Program.c_screenWidth, Program.c_screenHeight);
+        }
+
+        //-----------------------
+        public override void Init
+        (
+        )
+        {
+           
+        }
+
+        //-----------------------
+        public override void Destroy
+        (
         )
         {
             
         }
+
+        //-----------------------
+        public override void FixedUpdate
+        (
+            float i_fixedDeltaTime
+        )
+        {
+            //Color[] colours = new Color[] { Color.Red, Color.Green, Color.Blue, Color.Yellow, Color.Magenta, Color.Black };
+            //const float changeChance = 0.05f;
+            //for ( int i = 0; i < 25; i++)
+            //{
+            //    for (int j = 0; j < 25; j++)
+            //    {
+            //        if (Random.Shared.NextSingle() < changeChance)
+            //        {
+            //            ((TileRenderer)m_renderer).SetTileColour(i, j, colours[Random.Shared.Next(0, colours.Length)]);
+            //        }
+            //    }
+            //}
+
+        }
+
+        //-----------------------
+        public override void Update
+        (
+            float i_deltaTime
+        )
+        {
+            Color[] colours = new Color[] { Color.Red, Color.Green, Color.Blue, Color.Yellow, Color.Magenta, Color.Black };
+            const float changeChance = 0.05f;
+            for (int i = 0; i < 25; i++)
+            {
+                for (int j = 0; j < 25; j++)
+                {
+                    if (Random.Shared.NextSingle() < changeChance)
+                    {
+                        ((TileRenderer)m_renderer).SetTileColour(i, j, colours[Random.Shared.Next(0, colours.Length)]);
+                    }
+                }
+            }
+        }
+
+       
+
+
+        //Members
     }
 }

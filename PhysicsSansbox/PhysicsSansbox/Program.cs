@@ -14,10 +14,8 @@ class Program
     static void Main()
     {
         float timeAccumulator = 0f;
-        Renderer renderer;
-        List<LogicManager> managers;
-        WorldBuilder world = new PathfindWorld();
-        world.BuildWorld(out renderer, out managers);
+        World world = new PathfindWorld();
+        world._Init();
 
 
         InitWindow(c_screenWidth, c_screenHeight, "Raylib C# Sandbox");
@@ -25,21 +23,28 @@ class Program
 
         while (!WindowShouldClose())
         {
+            float frameTime = GetFrameTime();
+            // Cap frame time to avoid spiral of death
+            frameTime = MathF.Min(frameTime, 0.25f);
+
             //Fixed Update
-            timeAccumulator += Raylib.GetFrameTime();
+            timeAccumulator += frameTime;
             while (timeAccumulator >= c_fixedTimeStep)
             {
                 timeAccumulator -= c_fixedTimeStep;
-                foreach(LogicManager manager in managers)
-                {
-                    manager.FixedUpdate();
-                }
+                world._FixedUpdate(c_fixedTimeStep); 
             }
+            float alpha = (float)(timeAccumulator / c_fixedTimeStep);
+
+
+            //Variable Update
+            world._Update(frameTime);
+
 
             //Render
             BeginDrawing();
             ClearBackground(Raylib_cs.Color.Black);
-            renderer.Render(Raylib.GetFrameTime());
+            world.Render(alpha);
             EndDrawing();
         }
 
