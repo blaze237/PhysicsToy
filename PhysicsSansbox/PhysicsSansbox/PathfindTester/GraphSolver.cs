@@ -10,5 +10,12 @@ using System.Threading.Tasks;
 namespace PhysicsSansbox.PathfindTester;
 internal interface IGraphSolver
 {
-    public void Solve(List2D<Tile> i_graph, Vector2Int i_start, Vector2Int i_end, out List<Vector2Int> o_path);    
+    public void Init(ref List2D<Tile> i_graph, Vector2Int i_start, Vector2Int i_end);
+    
+    public void SolveNextStep();    
+
+    public bool IsFinished();
+
+
+    
 }
