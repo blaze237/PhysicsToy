@@ -8,6 +8,11 @@ using System.Threading.Tasks;
 namespace PhysicsSansbox.Utils;
 public class Vector2Int
 {
+    // Members
+    public int X { get; set; }
+    public int Y { get; set; }
+
+    // Methods
     //-----------------------
     public Vector2Int
     (
@@ -69,7 +74,5 @@ public class Vector2Int
         return HashCode.Combine(X, Y);
     }
 
-    //Members
-    public int X { get; set; }
-    public int Y { get; set; }  
+  
 }

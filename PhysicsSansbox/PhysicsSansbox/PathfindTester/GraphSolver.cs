@@ -20,6 +20,14 @@ public enum GraphSolveResult
 //-----------------------
 public abstract class GraphSolver
 {
+    // Members
+    protected List2D<Tile> m_graph;
+    protected Vector2Int m_start;
+    protected Vector2Int m_end;
+    protected List<Vector2Int> m_path = [];
+    public GraphSolveResult Result { get; protected set; } = GraphSolveResult.InProgress;
+
+    // Methods
     //-----------------------
     public GraphSolver
     (
@@ -45,10 +53,4 @@ public abstract class GraphSolver
     public abstract void SolveNextStep();
 
 
-    //Members
-    protected List2D<Tile> m_graph;
-    protected Vector2Int m_start;
-    protected Vector2Int m_end;
-    protected List<Vector2Int> m_path = [];
-    public GraphSolveResult Result { get; protected set; } = GraphSolveResult.InProgress;
 }

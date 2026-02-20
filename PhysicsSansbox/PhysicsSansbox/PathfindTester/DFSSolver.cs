@@ -8,6 +8,13 @@ namespace PhysicsSansbox.PathfindTester;
 
 public class DFSSolver : GraphSolver
 {
+    // Members
+    List2D<bool> m_visited;
+    List2D<Vector2Int> m_parents;
+    Stack<Vector2Int> m_stack;   
+    Vector2Int m_lastExploredNode;
+
+    // Methods
     //-----------------------
     public DFSSolver
     (
@@ -128,10 +135,6 @@ public class DFSSolver : GraphSolver
     }
 
 
-    //Members
-    List2D<bool> m_visited;
-    List2D<Vector2Int> m_parents;
-    Stack<Vector2Int> m_stack;   
-    Vector2Int m_lastExploredNode;  
+  
 }
 

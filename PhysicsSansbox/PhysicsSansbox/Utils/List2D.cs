@@ -7,6 +7,12 @@ using System.Threading.Tasks;
 namespace PhysicsSansbox.Utils;
 public class List2D<T>
 {
+    // Members
+    private readonly T[] m_data;
+    public readonly int m_width;
+    public readonly int m_height;
+
+    // Methods
 
     //--------------------
     public List2D
@@ -26,9 +32,4 @@ public class List2D<T>
         get => m_data[y * m_width + x];
         set => m_data[y * m_width + x] = value;
     }
-
-    //Members
-    private readonly T[] m_data;
-    public readonly int m_width;
-    public readonly int m_height;
 }   

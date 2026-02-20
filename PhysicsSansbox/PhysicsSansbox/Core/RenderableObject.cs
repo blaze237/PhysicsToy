@@ -2,6 +2,7 @@
 
 public abstract class RenderableObject
 {
+    // Methods
     //-------------------
     protected RenderableObject
     (

@@ -2,6 +2,10 @@
 
 public abstract class Renderer
 {
+    // Members
+    private List<RenderableObject> m_renderableOjects = new List<RenderableObject>();
+
+    // Methods
     //-------------------
     public void Render
     (
@@ -29,6 +33,4 @@ public abstract class Renderer
     public abstract void RenderImpl(float i_dt);
 
 
-    //Members
-    private List<RenderableObject> m_renderableOjects = new List<RenderableObject>();
 }

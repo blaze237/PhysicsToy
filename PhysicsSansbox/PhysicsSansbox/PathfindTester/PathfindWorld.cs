@@ -8,6 +8,26 @@ namespace PhysicsSansbox.PathfindTester;
 
 public class PathfindWorld : World
 {
+    // Members
+    private const int c_gridSize = 50;
+    private const float c_solveTimeStep = 0.1f;
+    private float m_solveTimeAccumulator = 0.0f;
+    private List2D<Tile> m_tiles = new List2D<Tile>(c_gridSize, c_gridSize);
+    private WorldState m_worldState = WorldState.CreateObstacles;
+    private Vector2Int m_startPos = new Vector2Int(-1, -1);
+    private Vector2Int m_goalPos = new Vector2Int(-1, -1); 
+    private DFSSolver m_dfsSolver;
+
+    private enum WorldState
+    {
+        CreateObstacles,
+        RouteSelectionStart,
+        RouteSelectionGoal,
+        Pathfinding,
+        Finished
+    }
+
+    // Methods
     //-----------------------
     public PathfindWorld
     (
@@ -154,13 +174,13 @@ public class PathfindWorld : World
             if(m_worldState == WorldState.RouteSelectionStart)
             {
                 m_tiles[clickedTileX, clickedTileY].State = TileState.Start;
-                m_startPos = new Vector2(clickedTileX, clickedTileY);
+                m_startPos = new Vector2Int(clickedTileX, clickedTileY);
                 m_worldState = WorldState.RouteSelectionGoal;
             }
             else if(m_worldState == WorldState.RouteSelectionGoal)
             {
                 m_tiles[clickedTileX, clickedTileY].State = TileState.Goal;
-                m_goalPos = new Vector2(clickedTileX, clickedTileY);
+                m_goalPos = new Vector2Int(clickedTileX, clickedTileY);
 
                 m_dfsSolver = new DFSSolver(ref m_tiles, m_startPos, m_goalPos);
                 m_worldState = WorldState.Pathfinding;
@@ -244,32 +264,7 @@ public class PathfindWorld : World
 
    
 
-    //-----------------------
-    private enum WorldState
-    {
-        CreateObstacles,
-        RouteSelectionStart,
-        RouteSelectionGoal,
-        Pathfinding,
-        Finished
-    }
-
-    //Members
-    private const int c_gridSize = 50;
-    private const float c_solveTimeStep = 0.1f;
-    private float m_solveTimeAccumulator = 0.0f;
-    private List2D<Tile> m_tiles = new List2D<Tile>(c_gridSize, c_gridSize);
-    private WorldState m_worldState = WorldState.CreateObstacles;
-    private Vector2Int m_startPos = new Vector2Int(-1, -1);
-    private Vector2Int m_goalPos = new Vector2Int(-1, -1); 
-    private DFSSolver m_dfsSolver;
 }
-
-
-//Color[] colours = new Color[] { Color.Red, Color.Green, Color.Blue, Color.Yellow, Color.Magenta, Color.Black };
-//const float changeChance = 0.01f;
-//for (int i = 0; i < 25; i++)
-//{
 //    for (int j = 0; j < 25; j++)
 //    {
 //        if (Random.Shared.NextSingle() < changeChance)

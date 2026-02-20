@@ -2,6 +2,11 @@
 
 public abstract class World
 {
+    // Members
+    protected List<LogicManager> m_managers = new List<LogicManager>();
+    protected Renderer m_renderer = null!;
+
+    // Methods
     //-----------------------
     public void _Init
     (
@@ -76,7 +81,4 @@ public abstract class World
     public abstract void FixedUpdate(float i_fixedDeltaTime);
     public abstract void Update(float i_deltaTime);
 
-    //Members
-    protected List<LogicManager> m_managers = new List<LogicManager>();
-    protected Renderer m_renderer = null!;
 }

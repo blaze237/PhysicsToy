@@ -8,6 +8,14 @@ namespace PhysicsSansbox.TileRender;
 
 class TileRenderer : Renderer
 {
+    // Members
+    public int GridSize { get; }
+    public int TileSize { get; set; }
+    public List2D<Color> TileColours {get; set;}
+    private float m_screenWidth;
+    private float m_screenHeight;
+
+    // Methods
     //-------------------------------------
     public TileRenderer
     (
@@ -54,10 +62,4 @@ class TileRenderer : Renderer
         }
     }
 
-    //Members
-    public int GridSize { get; }
-    public int TileSize { get; set; }
-    public List2D<Color> TileColours {get; set;}
-    private float m_screenWidth;
-    private float m_screenHeight;
 }

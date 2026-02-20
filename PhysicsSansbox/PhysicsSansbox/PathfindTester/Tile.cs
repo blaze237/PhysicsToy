@@ -20,9 +20,11 @@ public enum TileState
 //-----------------------
 public class Tile
 {
+    // Members
     public bool m_dirty = false;
     private TileState m_state;
 
+    // Methods
     public TileState State 
     { 
         get
