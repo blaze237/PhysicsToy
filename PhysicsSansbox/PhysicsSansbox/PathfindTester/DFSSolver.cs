@@ -3,6 +3,9 @@ using PhysicsSansbox.Utils;
 
 namespace PhysicsSansbox.PathfindTester;
 
+//TODO
+//Draw in between tile edges, ui for bits?, controls for diag allowed or not, control for explore pref
+
 public class DFSSolver : GraphSolver
 {
     //-----------------------
@@ -16,6 +19,7 @@ public class DFSSolver : GraphSolver
         m_visited = new List2D<bool>(i_graph.m_width, i_graph.m_height);
         m_parents = new List2D<Vector2Int>(i_graph.m_width, i_graph.m_height);
         m_stack = new Stack<Vector2Int>();
+        m_lastExploredNode = new Vector2Int(-1, -1);   
         m_stack.Push(i_start);
     }
 
@@ -30,13 +34,24 @@ public class DFSSolver : GraphSolver
             return;
         }
 
+        if(m_lastExploredNode.X != -1 && m_lastExploredNode.Y != -1)
+        {
+            //If the last explored node wasnt the start or end, we can flag it as explored so it gets rendered as such
+            if(m_lastExploredNode != m_start && m_lastExploredNode != m_end)
+            {
+                m_graph[m_lastExploredNode.X, m_lastExploredNode.Y].State = TileState.Explored;
+            }
+        }
+
         Vector2Int current = m_stack.Pop();
 
-        //Flag the tile as explored so it gets rendered as such, but only if its not the start or end tile
+        //Flag the tile as active so it gets rendered as such, but only if its not the start or end tile
         if(current != m_start && current != m_end)
         {
-            m_graph[current.X, current.Y].State = TileState.Explored;
+            m_graph[current.X, current.Y].State = TileState.Active;
         }
+
+        m_lastExploredNode = current;
 
         //we've already visited this node, skip it
         if(m_visited[current.X , current.Y])
@@ -116,6 +131,7 @@ public class DFSSolver : GraphSolver
     //Members
     List2D<bool> m_visited;
     List2D<Vector2Int> m_parents;
-    Stack<Vector2Int> m_stack;     
+    Stack<Vector2Int> m_stack;   
+    Vector2Int m_lastExploredNode;  
 }
 

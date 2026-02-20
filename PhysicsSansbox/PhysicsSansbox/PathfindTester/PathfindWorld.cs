@@ -27,7 +27,7 @@ public class PathfindWorld : World
     (
     )
     {
-        return new TileRenderer(25, Program.c_screenWidth, Program.c_screenHeight);
+        return new TileRenderer(c_gridSize, Program.c_screenWidth, Program.c_screenHeight);
     }
 
     //-----------------------
@@ -70,6 +70,9 @@ public class PathfindWorld : World
     {
         switch (m_worldState)
         {
+            case WorldState.CreateObstacles:
+                UpdateObstacleCreation();
+                break;
             case WorldState.RouteSelectionStart:
             case WorldState.RouteSelectionGoal:
                 UpdateRouteSelection();
@@ -109,6 +112,26 @@ public class PathfindWorld : World
             if(m_dfsSolver.Result != GraphSolveResult.InProgress)
             {
                 m_worldState = WorldState.Finished;
+
+                ClearExploredTiles();
+            }
+        }
+    }
+
+    //-----------------------
+    void ClearExploredTiles
+    (
+    )
+    {
+        for (int i = 0; i < c_gridSize; i++)
+        {
+            for (int j = 0; j < c_gridSize; j++)
+            {
+                if(m_tiles[i, j].State == TileState.Explored)
+                {
+                    m_tiles[i, j].State = TileState.Open;
+                    m_tiles[i, j].m_dirty = true;
+                }
             }
         }
     }
@@ -123,6 +146,10 @@ public class PathfindWorld : World
             int clickedTileX = -1;
             int clickedTileY = -1;
             GetTileCoordsFromScreenCoords(Raylib.GetMousePosition(), out clickedTileX, out clickedTileY);
+            if (clickedTileX < 0 || clickedTileX >= c_gridSize || clickedTileY < 0 || clickedTileY >= c_gridSize)
+            {
+                return;
+            }
 
             if(m_worldState == WorldState.RouteSelectionStart)
             {
@@ -139,6 +166,37 @@ public class PathfindWorld : World
                 m_worldState = WorldState.Pathfinding;
             }
             m_tiles[clickedTileX, clickedTileY].m_dirty = true;
+        }
+    }
+
+    //-----------------------
+    private void UpdateObstacleCreation
+    (
+    )
+    {
+        int clickedTileX = -1;
+        int clickedTileY = -1;
+        GetTileCoordsFromScreenCoords(Raylib.GetMousePosition(), out clickedTileX, out clickedTileY);
+        if(clickedTileX < 0 || clickedTileX >= c_gridSize || clickedTileY < 0 || clickedTileY >= c_gridSize)
+        {
+            return;
+        }
+
+        if (Raylib.IsMouseButtonDown(MouseButton.Left))
+        {
+           
+            m_tiles[clickedTileX, clickedTileY].State = TileState.Closed;
+            m_tiles[clickedTileX, clickedTileY].m_dirty = true;
+        }
+        else if (Raylib.IsMouseButtonDown(MouseButton.Right))
+        {
+            m_tiles[clickedTileX, clickedTileY].State = TileState.Open;
+            m_tiles[clickedTileX, clickedTileY].m_dirty = true;
+        }
+
+        if(Raylib.IsKeyPressed(KeyboardKey.Enter))
+        {
+            m_worldState = WorldState.RouteSelectionStart;
         }
     }
 
@@ -163,8 +221,10 @@ public class PathfindWorld : World
                 return Raylib_cs.Color.Green;
             case TileState.Explored:
                 return Raylib_cs.Color.Yellow;
-            default:
+            case TileState.Active:
                 return Raylib_cs.Color.White;
+            default:
+                return Raylib_cs.Color.Magenta;
         }
     }
 
@@ -187,6 +247,7 @@ public class PathfindWorld : World
     //-----------------------
     private enum WorldState
     {
+        CreateObstacles,
         RouteSelectionStart,
         RouteSelectionGoal,
         Pathfinding,
@@ -194,11 +255,11 @@ public class PathfindWorld : World
     }
 
     //Members
-    private const int c_gridSize = 25;
+    private const int c_gridSize = 50;
     private const float c_solveTimeStep = 0.1f;
     private float m_solveTimeAccumulator = 0.0f;
     private List2D<Tile> m_tiles = new List2D<Tile>(c_gridSize, c_gridSize);
-    private WorldState m_worldState = WorldState.RouteSelectionStart;
+    private WorldState m_worldState = WorldState.CreateObstacles;
     private Vector2Int m_startPos = new Vector2Int(-1, -1);
     private Vector2Int m_goalPos = new Vector2Int(-1, -1); 
     private DFSSolver m_dfsSolver;

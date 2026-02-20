@@ -13,7 +13,8 @@ public enum TileState
     Start,
     Goal,
     Path,
-    Explored
+    Explored,
+    Active
 }
 
 //-----------------------
