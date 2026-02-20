@@ -6,7 +6,7 @@ using System.Numerics;
 
 namespace PhysicsSansbox.PathfindTester;
 
-internal class PathfindWorld : World
+public class PathfindWorld : World
 {
     //-----------------------
     public PathfindWorld
@@ -39,7 +39,7 @@ internal class PathfindWorld : World
         {
             for (int j = 0; j < c_gridSize; j++)
             {
-                m_tiles[i, j].m_state = TileState.Open;
+                m_tiles[i, j].State = TileState.Open;
                 m_tiles[i, j].m_dirty = true;
             }
         }
@@ -75,6 +75,7 @@ internal class PathfindWorld : World
                 UpdateRouteSelection();
                 break;
             case WorldState.Pathfinding:
+                UpdatePathfinding(i_deltaTime);
                 break;
             case WorldState.Finished:
                 break;
@@ -87,9 +88,27 @@ internal class PathfindWorld : World
                 if (m_tiles[i, j].m_dirty)
                 {
                     //Update renderer tile colours based on tile states
-                    ((TileRenderer)m_renderer).TileColours[i, j] = GetColourForTileType(m_tiles[i, j].m_state);
+                    ((TileRenderer)m_renderer).TileColours[i, j] = GetColourForTileType(m_tiles[i, j].State);
                     m_tiles[i, j].m_dirty = false;
                 }
+            }
+        }
+    }
+
+    //-----------------------
+    private void UpdatePathfinding
+    (
+        float i_deltaTime
+    )
+    {
+        m_solveTimeAccumulator += i_deltaTime;
+        if(m_solveTimeAccumulator >= c_solveTimeStep)
+        {
+            m_solveTimeAccumulator = 0.0f;
+            m_dfsSolver.SolveNextStep();
+            if(m_dfsSolver.Result != GraphSolveResult.InProgress)
+            {
+                m_worldState = WorldState.Finished;
             }
         }
     }
@@ -107,26 +126,22 @@ internal class PathfindWorld : World
 
             if(m_worldState == WorldState.RouteSelectionStart)
             {
-                m_tiles[clickedTileX, clickedTileY].m_state = TileState.Start;
+                m_tiles[clickedTileX, clickedTileY].State = TileState.Start;
                 m_startPos = new Vector2(clickedTileX, clickedTileY);
                 m_worldState = WorldState.RouteSelectionGoal;
             }
             else if(m_worldState == WorldState.RouteSelectionGoal)
             {
-                m_tiles[clickedTileX, clickedTileY].m_state = TileState.Goal;
+                m_tiles[clickedTileX, clickedTileY].State = TileState.Goal;
                 m_goalPos = new Vector2(clickedTileX, clickedTileY);
+
+                m_dfsSolver = new DFSSolver(ref m_tiles, m_startPos, m_goalPos);
                 m_worldState = WorldState.Pathfinding;
             }
             m_tiles[clickedTileX, clickedTileY].m_dirty = true;
         }
     }
 
-    //-----------------------
-    private void UpdatePathfinding
-    (
-    )
-    {
-    }
 
     //-----------------------
     private static Raylib_cs.Color GetColourForTileType
@@ -146,6 +161,8 @@ internal class PathfindWorld : World
                 return Raylib_cs.Color.Blue;
             case TileState.Path:
                 return Raylib_cs.Color.Green;
+            case TileState.Explored:
+                return Raylib_cs.Color.Yellow;
             default:
                 return Raylib_cs.Color.White;
         }
@@ -178,10 +195,13 @@ internal class PathfindWorld : World
 
     //Members
     private const int c_gridSize = 25;
+    private const float c_solveTimeStep = 0.1f;
+    private float m_solveTimeAccumulator = 0.0f;
     private List2D<Tile> m_tiles = new List2D<Tile>(c_gridSize, c_gridSize);
     private WorldState m_worldState = WorldState.RouteSelectionStart;
-    private Vector2 m_startPos = new Vector2(-1, -1);
-    private Vector2 m_goalPos = new Vector2(-1, -1); 
+    private Vector2Int m_startPos = new Vector2Int(-1, -1);
+    private Vector2Int m_goalPos = new Vector2Int(-1, -1); 
+    private DFSSolver m_dfsSolver;
 }
 
 

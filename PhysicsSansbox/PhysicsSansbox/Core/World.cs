@@ -1,6 +1,6 @@
 ﻿namespace PhysicsSansbox.Core;
 
-internal abstract class World
+public abstract class World
 {
     //-----------------------
     public void _Init

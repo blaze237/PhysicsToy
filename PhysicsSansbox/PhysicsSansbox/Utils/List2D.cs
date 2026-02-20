@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace PhysicsSansbox.Utils;
-internal class List2D<T>
+public class List2D<T>
 {
 
     //--------------------

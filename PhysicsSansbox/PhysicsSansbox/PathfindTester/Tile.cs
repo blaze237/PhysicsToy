@@ -6,18 +6,40 @@ using System.Threading.Tasks;
 
 namespace PhysicsSansbox.PathfindTester;
 //-----------------------
-internal enum TileState
+public enum TileState
 {
     Open,
     Closed,
     Start,
     Goal,
-    Path
+    Path,
+    Explored
 }
 
 //-----------------------
-internal class Tile
+public class Tile
 {
     public bool m_dirty = false;
-    public TileState m_state = TileState.Open;
+    private TileState m_state;
+
+    public TileState State 
+    { 
+        get
+        {
+            return m_state;
+        }
+        set
+        {
+            if(m_state == TileState.Goal || m_state == TileState.Start)
+            {
+                Console.WriteLine("Attempting to change state of start or goal tile, this shouldnt happen");
+                return;
+            }
+            if(m_state != value)
+            {
+                m_state = value;
+                m_dirty = true;
+            }
+        }
+    }
 }

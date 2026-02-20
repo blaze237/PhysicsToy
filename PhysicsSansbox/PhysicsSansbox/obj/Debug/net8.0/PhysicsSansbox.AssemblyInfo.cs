@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PhysicsSansbox")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e7332094cec99ad6192be55d19a301fc9e103ef7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4651d2d62721c6aee3e4d5fba5f282bc4133a773")]
 [assembly: System.Reflection.AssemblyProductAttribute("PhysicsSansbox")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PhysicsSansbox")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

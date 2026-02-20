@@ -1,6 +1,6 @@
 ﻿namespace PhysicsSansbox.Core;
 
-internal abstract class Renderer
+public abstract class Renderer
 {
     //-------------------
     public void Render

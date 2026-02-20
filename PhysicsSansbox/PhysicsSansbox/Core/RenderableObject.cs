@@ -1,6 +1,6 @@
 ﻿namespace PhysicsSansbox.Core;
 
-internal abstract class RenderableObject
+public abstract class RenderableObject
 {
     //-------------------
     protected RenderableObject

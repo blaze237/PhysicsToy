@@ -8,14 +8,47 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace PhysicsSansbox.PathfindTester;
-internal interface IGraphSolver
+
+//-----------------------
+public enum GraphSolveResult
 {
-    public void Init(ref List2D<Tile> i_graph, Vector2Int i_start, Vector2Int i_end);
+    InProgress,
+    Solved,
+    NoPathFound
+}
+
+//-----------------------
+public abstract class GraphSolver
+{
+    //-----------------------
+    public GraphSolver
+    (
+        ref List2D<Tile> i_graph,
+        Vector2Int i_start, 
+        Vector2Int i_end
+    )
+    {
+        m_graph = i_graph;
+        m_start = i_start;
+        m_end = i_end;
+    }
     
-    public void SolveNextStep();    
+    //--------------------------------
+    public  List<Vector2Int> GetPath
+    (   
+    )
+    {
+        return m_path;
+    }
 
-    public bool IsFinished();
+    //-----------------------
+    public abstract void SolveNextStep();
 
 
-    
+    //Members
+    protected List2D<Tile> m_graph;
+    protected Vector2Int m_start;
+    protected Vector2Int m_end;
+    protected List<Vector2Int> m_path = [];
+    public GraphSolveResult Result { get; protected set; } = GraphSolveResult.InProgress;
 }
