@@ -9,10 +9,18 @@ namespace PhysicsSansbox.PathfindTester;
 public class DFSSolver : GraphSolver
 {
     // Members
-    List2D<bool> m_visited;
-    List2D<Vector2Int> m_parents;
-    Stack<Vector2Int> m_stack;   
-    Vector2Int m_lastExploredNode;
+    private List2D<bool> m_visited;
+    private List2D<Vector2Int> m_parents;
+    private Stack<Vector2Int> m_stack;   
+    private Vector2Int m_lastExploredNode;
+
+    //We use these to define the order in which we explore neighbors
+    private int[] m_diagNeighbors = [-1, -1, 0, 1, 1, 1, 0, -1];
+    private int[] m_noDiagNeighbors = [0, 1, 1, 0, 0, -1, -1, 0];
+    private int[][] m_neighbors;
+    private int[] m_neighbourIndexOrdering = [0, 1, 2, 3];
+    private bool m_allowDiagonal;
+
 
     // Methods
     //-----------------------
@@ -20,7 +28,9 @@ public class DFSSolver : GraphSolver
     (
         ref List2D<Tile> i_graph,
         Vector2Int i_start,
-        Vector2Int i_end
+        Vector2Int i_end,
+        bool i_allowDiag,
+        bool i_randomizeNeighborOrder
     ) : base(ref i_graph, i_start, i_end)
     {
         m_visited = new List2D<bool>(i_graph.m_width, i_graph.m_height);
@@ -28,6 +38,16 @@ public class DFSSolver : GraphSolver
         m_stack = new Stack<Vector2Int>();
         m_lastExploredNode = new Vector2Int(-1, -1);   
         m_stack.Push(i_start);
+
+        m_neighbors = [m_diagNeighbors, m_noDiagNeighbors];
+
+        if(i_randomizeNeighborOrder)
+        {
+            m_neighbourIndexOrdering = Enumerable.Range(0, 4).OrderBy(x => Random.Shared.Next()).ToArray();
+        }
+        m_allowDiagonal = i_allowDiag;
+
+
     }
 
     //-----------------------
@@ -50,7 +70,15 @@ public class DFSSolver : GraphSolver
             }
         }
 
+        //I dont get how this is even possible
+        if(m_stack.Count == 0)
+        {
+            Result = GraphSolveResult.NoPathFound;
+            return;
+        }
         Vector2Int current = m_stack.Pop();
+     
+        //todo, some gui, controls for the rando and diags
 
         //Flag the tile as active so it gets rendered as such, but only if its not the start or end tile
         if(current != m_start && current != m_end)
@@ -94,34 +122,35 @@ public class DFSSolver : GraphSolver
         }
 
         //Otherwise, we need to explore our neighbours
-        for(int i = -1; i <= 1; ++i)
+        for(int nIdx = 0; nIdx < 4; ++nIdx)
         {
-            for(int j = -1; j <=1; ++j)
+            int shuffledIdx = m_neighbourIndexOrdering[nIdx];
+            int i = m_neighbors[m_allowDiagonal ? 0 : 1][shuffledIdx * 2];
+            int j = m_neighbors[m_allowDiagonal ? 0 : 1][shuffledIdx * 2 + 1];
+            //skip the current node
+            if(i == 0 && j == 0)
             {
-                //skip the current node
-                if(i == 0 && j == 0)
-                {
-                    continue;
-                }
-                Vector2Int neighbor = new Vector2Int(current.X + i, current.Y + j);
-                //Skip neighbors that are out of bounds
-                if(neighbor.X < 0 || neighbor.X >= m_graph.m_width || neighbor.Y < 0 || neighbor.Y >= m_graph.m_height)
-                {
-                    continue;
-                }
-                //Skip neighbors we've already visited
-                if(m_visited[neighbor.X, neighbor.Y])
-                {
-                    continue;
-                }
-                //Skip neighbors that are blocked
-                if(m_graph[neighbor.X, neighbor.Y].State == TileState.Closed)
-                {
-                    continue;
-                }
-                m_stack.Push(neighbor);
-                m_parents[neighbor.X, neighbor.Y] = current;              
+                continue;
             }
+            Vector2Int neighbor = new Vector2Int(current.X + i, current.Y + j);
+            //Skip neighbors that are out of bounds
+            if(neighbor.X < 0 || neighbor.X >= m_graph.m_width || neighbor.Y < 0 || neighbor.Y >= m_graph.m_height)
+            {
+                continue;
+            }
+            //Skip neighbors we've already visited
+            if(m_visited[neighbor.X, neighbor.Y])
+            {
+                continue;
+            }
+            //Skip neighbors that are blocked
+            if(m_graph[neighbor.X, neighbor.Y].State == TileState.Closed)
+            {
+                continue;
+            }
+            m_stack.Push(neighbor);
+            m_parents[neighbor.X, neighbor.Y] = current;              
+            
         }
 
 

@@ -14,9 +14,9 @@ public class PathfindWorld : World
     private float m_solveTimeAccumulator = 0.0f;
     private List2D<Tile> m_tiles = new List2D<Tile>(c_gridSize, c_gridSize);
     private WorldState m_worldState = WorldState.CreateObstacles;
-    private Vector2Int m_startPos = new Vector2Int(-1, -1);
-    private Vector2Int m_goalPos = new Vector2Int(-1, -1); 
-    private DFSSolver m_dfsSolver;
+    private Vector2Int m_startPos = new(-1, -1);
+    private Vector2Int m_goalPos = new(-1, -1); 
+    private DFSSolver? m_dfsSolver;
 
     private enum WorldState
     {
@@ -88,6 +88,11 @@ public class PathfindWorld : World
         float i_deltaTime
     )
     {
+        if(Raylib.IsKeyPressed(KeyboardKey.R))
+        {
+            Reset();
+        }
+
         switch (m_worldState)
         {
             case WorldState.CreateObstacles:
@@ -116,6 +121,31 @@ public class PathfindWorld : World
                 }
             }
         }
+    }
+
+    //-----------------------
+    private void Reset
+    (
+    )
+    {
+        
+        //Reset tiles to open
+        for (int i = 0; i < c_gridSize; i++)
+        {
+            for (int j = 0; j < c_gridSize; j++)
+            {
+                m_tiles[i, j].State = TileState.Open;
+                m_tiles[i, j].m_dirty = true;
+            }
+        }
+
+        m_startPos = new(-1, -1);
+        m_goalPos = new(-1, -1);
+        
+        //Reset solver
+        m_dfsSolver = null;
+        m_worldState = WorldState.CreateObstacles;
+        m_solveTimeAccumulator = 0.0f;
     }
 
     //-----------------------
@@ -163,9 +193,7 @@ public class PathfindWorld : World
     {
         if (Raylib.IsMouseButtonPressed(MouseButton.Left))
         {
-            int clickedTileX = -1;
-            int clickedTileY = -1;
-            GetTileCoordsFromScreenCoords(Raylib.GetMousePosition(), out clickedTileX, out clickedTileY);
+            GetTileCoordsFromScreenCoords(Raylib.GetMousePosition(), out int clickedTileX, out int clickedTileY);
             if (clickedTileX < 0 || clickedTileX >= c_gridSize || clickedTileY < 0 || clickedTileY >= c_gridSize)
             {
                 return;
@@ -182,7 +210,9 @@ public class PathfindWorld : World
                 m_tiles[clickedTileX, clickedTileY].State = TileState.Goal;
                 m_goalPos = new Vector2Int(clickedTileX, clickedTileY);
 
-                m_dfsSolver = new DFSSolver(ref m_tiles, m_startPos, m_goalPos);
+                bool allowDiagonal = false;
+                bool randomizeNeighborOrder = true;
+                m_dfsSolver = new DFSSolver(ref m_tiles, m_startPos, m_goalPos, allowDiagonal, randomizeNeighborOrder);
                 m_worldState = WorldState.Pathfinding;
             }
             m_tiles[clickedTileX, clickedTileY].m_dirty = true;
@@ -265,11 +295,3 @@ public class PathfindWorld : World
    
 
 }
-//    for (int j = 0; j < 25; j++)
-//    {
-//        if (Random.Shared.NextSingle() < changeChance)
-//        {
-//            ((TileRenderer)m_renderer).TileColours[i, j] = colours[Random.Shared.Next(0, colours.Length)];
-//        }
-//    }
-//}

@@ -33,11 +33,6 @@ public class Tile
         }
         set
         {
-            if(m_state == TileState.Goal || m_state == TileState.Start)
-            {
-                Console.WriteLine("Attempting to change state of start or goal tile, this shouldnt happen");
-                return;
-            }
             if(m_state != value)
             {
                 m_state = value;

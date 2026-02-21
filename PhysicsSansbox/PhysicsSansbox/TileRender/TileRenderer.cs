@@ -14,6 +14,9 @@ class TileRenderer : Renderer
     public List2D<Color> TileColours {get; set;}
     private float m_screenWidth;
     private float m_screenHeight;
+     
+    //Todo make this a fraction of the screen size
+    private const int m_borderWidth = 2;
 
     // Methods
     //-------------------------------------
@@ -56,8 +59,10 @@ class TileRenderer : Renderer
         {
             for (int x = 0; x < GridSize; x++)
             {
-                Raylib.DrawRectangle(x * TileSize, y * TileSize, TileSize, TileSize, TileColours[x, y]);
 
+                int drawSizeX = x < GridSize - 1 ? TileSize - m_borderWidth : TileSize;
+                int drawSizeY = y < GridSize - 1 ? TileSize - m_borderWidth : TileSize;
+                Raylib.DrawRectangle(x * TileSize, y * TileSize, drawSizeX, drawSizeY, TileColours[x, y]);
             }
         }
     }

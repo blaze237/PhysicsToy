@@ -14,7 +14,6 @@ class Program
         World world = new PathfindWorld();
         world._Init();
 
-
         InitWindow(c_screenWidth, c_screenHeight, "Raylib C# Sandbox");
        // SetTargetFPS(60);
 
