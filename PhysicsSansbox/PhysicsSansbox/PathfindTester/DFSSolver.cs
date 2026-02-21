@@ -3,9 +3,6 @@ using PhysicsSansbox.Utils;
 
 namespace PhysicsSansbox.PathfindTester;
 
-//TODO
-//Draw in between tile edges, ui for bits?, controls for diag allowed or not, control for explore pref
-
 public class DFSSolver : GraphSolver
 {
     // Members
@@ -13,13 +10,12 @@ public class DFSSolver : GraphSolver
     private List2D<Vector2Int> m_parents;
     private Stack<Vector2Int> m_stack;   
     private Vector2Int m_lastExploredNode;
-
-    //We use these to define the order in which we explore neighbors
-    private int[] m_diagNeighbors = [-1, -1, 0, 1, 1, 1, 0, -1];
-    private int[] m_noDiagNeighbors = [0, 1, 1, 0, 0, -1, -1, 0];
-    private int[][] m_neighbors;
+    //We use these to define the order in which we explore neighbors. Each pair of values defines a neighbor
+    private static readonly int[] m_diagNeighbors = [-1, -1, 0, 1, 1, 1, 0, -1];
+    private static readonly int[] m_noDiagNeighbors = [0, 1, 1, 0, 0, -1, -1, 0];
+    private int[] m_neighbors;
+    //The order in which to visit the neighbour pairs defined above. Stored in an array to allow randomization
     private int[] m_neighbourIndexOrdering = [0, 1, 2, 3];
-    private bool m_allowDiagonal;
 
 
     // Methods
@@ -39,13 +35,12 @@ public class DFSSolver : GraphSolver
         m_lastExploredNode = new Vector2Int(-1, -1);   
         m_stack.Push(i_start);
 
-        m_neighbors = [m_diagNeighbors, m_noDiagNeighbors];
+        m_neighbors = i_allowDiag ? m_diagNeighbors : m_noDiagNeighbors;
 
         if(i_randomizeNeighborOrder)
         {
             m_neighbourIndexOrdering = Enumerable.Range(0, 4).OrderBy(x => Random.Shared.Next()).ToArray();
         }
-        m_allowDiagonal = i_allowDiag;
 
 
     }
@@ -125,8 +120,8 @@ public class DFSSolver : GraphSolver
         for(int nIdx = 0; nIdx < 4; ++nIdx)
         {
             int shuffledIdx = m_neighbourIndexOrdering[nIdx];
-            int i = m_neighbors[m_allowDiagonal ? 0 : 1][shuffledIdx * 2];
-            int j = m_neighbors[m_allowDiagonal ? 0 : 1][shuffledIdx * 2 + 1];
+            int i = m_neighbors[shuffledIdx * 2];
+            int j = m_neighbors[shuffledIdx * 2 + 1];
             //skip the current node
             if(i == 0 && j == 0)
             {
