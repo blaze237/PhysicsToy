@@ -1,5 +1,6 @@
-﻿using PhysicsSansbox.Core;
-using PhysicsSansbox.PathfindTester;
+﻿using PhysicsSandbox.Core;
+using PhysicsSandbox.PathfindTester;
+using PhysicsSandbox.Utils;
 using static Raylib_cs.Raylib;
 
 class Program
@@ -12,10 +13,15 @@ class Program
     {
         float timeAccumulator = 0f;
         World world = new PathfindWorld();
+        UIManager uiManager = UIManager.Instance;
+
         world._Init();
 
         InitWindow(c_screenWidth, c_screenHeight, "Raylib C# Sandbox");
-       // SetTargetFPS(60);
+
+        //Debug only
+        bool checkboxValue = false;
+        uiManager.CreateAndRegisterCheckbox(new Vector2Int(50, 50), "Test", () => checkboxValue, (value) => checkboxValue = value);
 
         while (!WindowShouldClose())
         {
@@ -34,13 +40,14 @@ class Program
 
 
             //Variable Update
+            uiManager.Update(frameTime); //UI is updated first so that it can claim inputs
             world._Update(frameTime);
-
 
             //Render
             BeginDrawing();
-            ClearBackground(Raylib_cs.Color.Black); //Should the renderer handle this
+            ClearBackground(Raylib_cs.Color.White); //Should the renderer handle this
             world.Render(alpha);
+            uiManager.Render(); //UI is always rendered on top
             EndDrawing();
         }
 

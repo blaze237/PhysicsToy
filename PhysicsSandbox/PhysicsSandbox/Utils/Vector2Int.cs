@@ -5,7 +5,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PhysicsSansbox.Utils;
+namespace PhysicsSandbox.Utils;
 public class Vector2Int
 {
     // Members

@@ -1,5 +1,5 @@
-﻿using PhysicsSansbox.Core;
-using PhysicsSansbox.Utils;
+﻿using PhysicsSandbox.Core;
+using PhysicsSandbox.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PhysicsSansbox.PathfindTester;
+namespace PhysicsSandbox.PathfindTester;
 
 //-----------------------
 public enum GraphSolveResult

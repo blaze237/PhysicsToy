@@ -1,9 +1,9 @@
-﻿using PhysicsSansbox.Core;
-using PhysicsSansbox.Utils;
+﻿using PhysicsSandbox.Core;
+using PhysicsSandbox.Utils;
 using Raylib_cs;
 using System.Diagnostics;
 
-namespace PhysicsSansbox.TileRender;
+namespace PhysicsSandbox.TileRender;
 
 
 class TileRenderer : Renderer

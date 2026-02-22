@@ -1,10 +1,10 @@
-﻿using PhysicsSansbox.Core;
-using PhysicsSansbox.TileRender;
-using PhysicsSansbox.Utils;
+﻿using PhysicsSandbox.Core;
+using PhysicsSandbox.TileRender;
+using PhysicsSandbox.Utils;
 using Raylib_cs;
 using System.Numerics;
 
-namespace PhysicsSansbox.PathfindTester;
+namespace PhysicsSandbox.PathfindTester;
 
 public class PathfindWorld : World
 {

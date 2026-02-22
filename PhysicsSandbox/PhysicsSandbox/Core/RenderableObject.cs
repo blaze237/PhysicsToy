@@ -1,4 +1,4 @@
-﻿namespace PhysicsSansbox.Core;
+﻿namespace PhysicsSandbox.Core;
 
 public abstract class RenderableObject
 {

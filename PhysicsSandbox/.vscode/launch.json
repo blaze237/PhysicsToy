@@ -10,9 +10,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/PhysicsSansbox/bin/Debug/net8.0/PhysicsSansbox.dll",
+            "program": "${workspaceFolder}/PhysicsSandbox/bin/Debug/net8.0/PhysicsSandbox.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/PhysicsSansbox",
+            "cwd": "${workspaceFolder}/PhysicsSandbox",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
             "console": "internalConsole",
             "stopAtEntry": false

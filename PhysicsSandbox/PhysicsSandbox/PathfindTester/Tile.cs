@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PhysicsSansbox.PathfindTester;
+namespace PhysicsSandbox.PathfindTester;
 //-----------------------
 public enum TileState
 {

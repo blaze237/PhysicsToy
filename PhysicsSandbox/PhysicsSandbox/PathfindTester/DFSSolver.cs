@@ -1,7 +1,7 @@
 using System;
-using PhysicsSansbox.Utils;
+using PhysicsSandbox.Utils;
 
-namespace PhysicsSansbox.PathfindTester;
+namespace PhysicsSandbox.PathfindTester;
 
 public class DFSSolver : GraphSolver
 {
