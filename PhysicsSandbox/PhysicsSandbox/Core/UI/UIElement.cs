@@ -1,6 +1,6 @@
 using System;
 
-namespace PhysicsSandbox.Core;
+namespace PhysicsSandbox.Core.UI;
 
 public abstract class UIElement
 {

@@ -1,4 +1,5 @@
 ﻿using PhysicsSandbox.Core;
+using PhysicsSandbox.Core.UI;
 using PhysicsSandbox.PathfindTester;
 using PhysicsSandbox.Utils;
 using static Raylib_cs.Raylib;
@@ -40,7 +41,7 @@ class Program
 
 
             //Variable Update
-            uiManager.Update(frameTime); //UI is updated first so that it can claim inputs
+            uiManager.Update(frameTime); //UI is updated first so that it can claim inputs (once implemented)
             world._Update(frameTime);
 
             //Render

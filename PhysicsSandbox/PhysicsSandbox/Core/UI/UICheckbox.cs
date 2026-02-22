@@ -1,10 +1,9 @@
 using System;
 using System.Numerics;
-using System.Security.Cryptography.X509Certificates;
 using PhysicsSandbox.Utils;
 using Raylib_cs;
 
-namespace PhysicsSandbox.Core;
+namespace PhysicsSandbox.Core.UI;
 
 public class UICheckbox : UIElement
 {

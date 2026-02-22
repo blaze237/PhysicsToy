@@ -2,7 +2,7 @@ using System;
 using PhysicsSandbox.Utils;
 using Raylib_cs;
 
-namespace PhysicsSandbox.Core;
+namespace PhysicsSandbox.Core.UI;
 
 using UIElementID = uint;
 using UILayerID = uint;
@@ -26,7 +26,7 @@ public sealed class UIManager
 
     //Todo grab the screen size from the game window and use it to set the scale for all elements
 
-    //Potential todo. Add a way for the ui manager to flag inputs as claimed for this tick, so that the game window doesn't process them
+    //TODO: Add a way for the ui manager to flag inputs as claimed for this tick, so that the game window doesn't process them
 
 
     //Methods
