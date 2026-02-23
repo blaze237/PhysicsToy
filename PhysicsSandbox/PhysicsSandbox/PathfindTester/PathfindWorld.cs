@@ -1,8 +1,10 @@
 ﻿using PhysicsSandbox.Core;
+using PhysicsSandbox.Core.UI;
 using PhysicsSandbox.TileRender;
 using PhysicsSandbox.Utils;
 using Raylib_cs;
 using System.Numerics;
+using static PhysicsSandbox.Core.UI.UIText;
 
 namespace PhysicsSandbox.PathfindTester;
 
@@ -18,8 +20,12 @@ public class PathfindWorld : World
     private Vector2Int m_goalPos = new(-1, -1); 
     private DFSSolver? m_dfsSolver;
 
+    //UI elements
+    private UIElementID m_infoBoxID;
+
     private enum WorldState
     {
+        Setup,
         CreateObstacles,
         RouteSelectionStart,
         RouteSelectionGoal,
@@ -63,6 +69,11 @@ public class PathfindWorld : World
                 m_tiles[i, j].m_dirty = true;
             }
         }
+
+        //TODO wrap all this ui in its own class or maybe have the concept of world ui managers?
+        m_infoBoxID = UIManager.Instance.CreateAndRegisterRoundedBox(new Vector2Int(25, 25), new Vector2Int(300, 100), new Color(0, 0, 0, 128));
+        UIManager.Instance.CreateAndRegisterText("Pathfinding Test", Color.White, FontStyle.Regular, new Vector2(30, 30), 25, 1);
+
     }
 
     //-----------------------
@@ -224,10 +235,8 @@ public class PathfindWorld : World
     (
     )
     {
-        int clickedTileX = -1;
-        int clickedTileY = -1;
-        GetTileCoordsFromScreenCoords(Raylib.GetMousePosition(), out clickedTileX, out clickedTileY);
-        if(clickedTileX < 0 || clickedTileX >= c_gridSize || clickedTileY < 0 || clickedTileY >= c_gridSize)
+        GetTileCoordsFromScreenCoords(Raylib.GetMousePosition(), out int clickedTileX, out int clickedTileY);
+        if (clickedTileX < 0 || clickedTileX >= c_gridSize || clickedTileY < 0 || clickedTileY >= c_gridSize)
         {
             return;
         }

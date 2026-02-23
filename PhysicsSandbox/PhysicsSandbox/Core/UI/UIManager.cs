@@ -1,13 +1,15 @@
+//Global defines for ui types
+global using UIElementID = uint;
+global using UILayerID = uint;
+
 using System;
+using System.Numerics;
 using PhysicsSandbox.Utils;
 using Raylib_cs;
+using static PhysicsSandbox.Core.UI.UIText;
+
 
 namespace PhysicsSandbox.Core.UI;
-
-using UIElementID = uint;
-using UILayerID = uint;
-
-
 public sealed class UIManager
 {
     //Members
@@ -24,7 +26,6 @@ public sealed class UIManager
     private Dictionary<UIElementID, UIElement> m_elements = new();
     private Dictionary<UIElementID, UILayerID> m_elementToLayer = new(); 
 
-    //Todo grab the screen size from the game window and use it to set the scale for all elements
 
     //TODO: Add a way for the ui manager to flag inputs as claimed for this tick, so that the game window doesn't process them
 
@@ -86,7 +87,7 @@ public sealed class UIManager
 
     )
     {
-       foreach (var layer in m_layers.Reverse())
+       foreach (var layer in m_layers)
         {
             foreach (var id in layer.Value)
             {
@@ -141,7 +142,7 @@ public sealed class UIManager
         return RegisterElement(box, i_layerID);
     }
 
-     //-------------
+    //-------------
     public UIElementID CreateAndRegisterRoundedBox
     (
         Vector2Int i_position,
@@ -153,6 +154,21 @@ public sealed class UIManager
     {
         UIBox box = new UIBox(i_position, i_size, i_rounding, i_color);
         return RegisterElement(box, i_layerID);
+    }
+
+    //-------------
+    public UIElementID CreateAndRegisterText
+    (
+        string i_text,
+        Color i_color,
+        FontStyle i_style,
+        Vector2 i_position,
+        int i_fontSize,
+        UILayerID i_layerID = 0
+    )
+    {
+        UIText text = new UIText(i_text, i_color, i_style, i_position, i_fontSize);
+        return RegisterElement(text, i_layerID);
     }
 
     //Private singleton constructor
