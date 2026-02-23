@@ -104,11 +104,10 @@ public sealed class UIManager
         string i_label,
         Func<bool> i_getter,
         Action<bool> i_setter,
-        float i_scale = 1.0f,
         UILayerID i_layerID = 0
     )
     {
-        UICheckbox checkbox = new UICheckbox(i_position, i_label, i_getter, i_setter, i_scale);
+        UICheckbox checkbox = new UICheckbox(i_position, i_label, i_getter, i_setter);
         return RegisterElement(checkbox, i_layerID);
     }              
 
@@ -122,13 +121,39 @@ public sealed class UIManager
         Color i_selectedColor,
         Color i_unselectedColor,
         Color i_labelColor,
-        float i_scale = 1.0f,
         UILayerID i_layerID = 0
     )
     {
-        UICheckbox checkbox = new UICheckbox(i_position, i_label, i_getter, i_setter, i_selectedColor, i_unselectedColor, i_labelColor, i_scale);
+        UICheckbox checkbox = new UICheckbox(i_position, i_label, i_getter, i_setter, i_selectedColor, i_unselectedColor, i_labelColor);
         return RegisterElement(checkbox, i_layerID);
     }     
+
+    //-------------
+    public UIElementID CreateAndRegisterBox
+    (
+        Vector2Int i_position,
+        Vector2Int i_size,
+        Color i_color,
+        UILayerID i_layerID = 0
+    )
+    {
+        UIBox box = new UIBox(i_position, i_size, i_color);
+        return RegisterElement(box, i_layerID);
+    }
+
+     //-------------
+    public UIElementID CreateAndRegisterRoundedBox
+    (
+        Vector2Int i_position,
+        Vector2Int i_size,
+        Color i_color,
+        float i_rounding = 0.2f,
+        UILayerID i_layerID = 0
+    )
+    {
+        UIBox box = new UIBox(i_position, i_size, i_rounding, i_color);
+        return RegisterElement(box, i_layerID);
+    }
 
     //Private singleton constructor
     private UIManager() {}

@@ -26,19 +26,13 @@ public class UICheckbox : UIElement
         Vector2Int i_position, //Raw screen position top left anchorred
         string i_label,
         Func<bool> i_getter,
-        Action<bool> i_setter,
-        float i_scale = 1.0f
+        Action<bool> i_setter
     )
     {
         m_label = i_label;
         m_getter = i_getter;
         m_setter = i_setter;
         m_position = i_position;
-        m_size.X = (int)(i_scale * m_size.X);
-        m_size.Y = (int)(i_scale * m_size.Y);
-        m_labelSize = (int)(i_scale * m_labelSize);
-        m_borderSize = (int)(i_scale * m_borderSize);
-        m_labelOffset = (int)(i_scale * m_labelOffset);
     }
 
     //--------------
@@ -50,10 +44,9 @@ public class UICheckbox : UIElement
         Action<bool> i_setter,
         Color i_selectedColor,
         Color i_unselectedColor,
-        Color i_labelColor,
-        float i_scale = 1.0f
+        Color i_labelColor
     )
-    : this(i_position, i_label, i_getter, i_setter, i_scale)
+    : this(i_position, i_label, i_getter, i_setter)
     {
         m_selectedColor = i_selectedColor;
         m_unselectedColor = i_unselectedColor;
@@ -67,6 +60,7 @@ public class UICheckbox : UIElement
     )
     {
         Rectangle bounds = new(m_position.X, m_position.Y, m_size.X, m_size.Y);
+        UIScaler.ScaleRect(ref bounds);
         Raylib.DrawRectangleLinesEx(bounds, m_borderSize, Color.Black);
         if (m_getter())
         {
@@ -79,7 +73,7 @@ public class UICheckbox : UIElement
         
         if (!string.IsNullOrEmpty(m_label))
         {
-            Raylib.DrawText(m_label, (int)(bounds.X + bounds.Width + m_labelOffset), (int)bounds.Y, m_labelSize, Color.Black);
+            Raylib.DrawText(m_label, (int)(bounds.X + bounds.Width + UIScaler.ScaleValue(m_labelOffset)), (int)bounds.Y, (int)UIScaler.ScaleValue(m_labelSize), Color.Black);
         }
     }
 
@@ -92,6 +86,7 @@ public class UICheckbox : UIElement
         {
             Vector2 mousePos = Raylib.GetMousePosition();
             Rectangle bounds = new(m_position.X, m_position.Y, m_size.X, m_size.Y);
+            UIScaler.ScaleRect(ref bounds);
             if (Raylib.CheckCollisionPointRec(mousePos, bounds))
             {
                 m_setter(!m_getter());
