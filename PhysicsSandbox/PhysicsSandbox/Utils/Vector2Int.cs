@@ -74,5 +74,13 @@ public class Vector2Int
         return HashCode.Combine(X, Y);
     }
 
+    //-----------------------
+    public Vector2 ToVector2
+    (
+    )
+    {
+        return new Vector2(X, Y);
+    }
+
   
 }

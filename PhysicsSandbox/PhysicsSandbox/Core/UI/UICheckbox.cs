@@ -19,6 +19,7 @@ public class UICheckbox : UIElement
     private Color m_selectedColor = Color.DarkGray;
     private Color m_unselectedColor = Color.LightGray;
     private Color m_labelColor = Color.Black;
+    private bool m_applyScaling = true;
 
     //--------------
     public UICheckbox
@@ -26,12 +27,15 @@ public class UICheckbox : UIElement
         Vector2Int i_position, //Raw screen position top left anchorred
         string i_label,
         Func<bool> i_getter,
-        Action<bool> i_setter
+        Action<bool> i_setter,
+        bool i_scalePosition = true
     )
     {
         m_label = i_label;
         m_getter = i_getter;
         m_setter = i_setter;
+        m_position = i_position;
+        m_applyScaling = i_scalePosition;
         m_position = i_position;
     }
 
@@ -44,9 +48,10 @@ public class UICheckbox : UIElement
         Action<bool> i_setter,
         Color i_selectedColor,
         Color i_unselectedColor,
-        Color i_labelColor
+        Color i_labelColor, 
+        bool i_scalePosition = true
     )
-    : this(i_position, i_label, i_getter, i_setter)
+    : this(i_position, i_label, i_getter, i_setter, i_scalePosition)
     {
         m_selectedColor = i_selectedColor;
         m_unselectedColor = i_unselectedColor;
@@ -60,7 +65,10 @@ public class UICheckbox : UIElement
     )
     {
         Rectangle bounds = new(m_position.X, m_position.Y, m_size.X, m_size.Y);
-        UIScaler.ScaleRect(ref bounds);
+        if (m_applyScaling)
+        {
+            UIScaler.ScaleRect(ref bounds);
+        }
         Raylib.DrawRectangleLinesEx(bounds, m_borderSize, Color.Black);
         if (m_getter())
         {
@@ -73,7 +81,9 @@ public class UICheckbox : UIElement
         
         if (!string.IsNullOrEmpty(m_label))
         {
-            Raylib.DrawText(m_label, (int)(bounds.X + bounds.Width + UIScaler.ScaleValue(m_labelOffset)), (int)bounds.Y, (int)UIScaler.ScaleValue(m_labelSize), Color.Black);
+            float labelOffset = m_applyScaling ? UIScaler.ScaleValue(m_labelOffset) : m_labelOffset;
+            float labelSize = m_applyScaling ? UIScaler.ScaleValue(m_labelSize) : m_labelSize;
+            Raylib.DrawText(m_label, (int)(bounds.X + bounds.Width + labelOffset), (int)bounds.Y, (int)labelSize, Color.Black);
         }
     }
 
@@ -86,7 +96,10 @@ public class UICheckbox : UIElement
         {
             Vector2 mousePos = Raylib.GetMousePosition();
             Rectangle bounds = new(m_position.X, m_position.Y, m_size.X, m_size.Y);
-            UIScaler.ScaleRect(ref bounds);
+            if (m_applyScaling)
+            {
+                UIScaler.ScaleRect(ref bounds);
+            }
             if (Raylib.CheckCollisionPointRec(mousePos, bounds))
             {
                 m_setter(!m_getter());

@@ -1,6 +1,9 @@
+using PhysicsSandbox.Utils;
 using Raylib_cs;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Numerics;
 
 public static class UIScaler
 {
@@ -18,6 +21,20 @@ public static class UIScaler
     }
 
     //Methods
+
+    //-------------
+    public static Vector2Int RelativeToAbsolute
+    (
+        Vector2 relative
+    )
+    {
+        Debug.Assert(relative.X >= 0 && relative.X <= 1);
+        Debug.Assert(relative.Y >= 0 && relative.Y <= 1);
+        float screenWidth = Raylib.GetScreenWidth();
+        float screenHeight = Raylib.GetScreenHeight();
+        return new Vector2Int((int)(relative.X * screenWidth), (int)(relative.Y * screenHeight));
+    }
+
     //--------------
     public static void ScaleRect
     (
@@ -37,5 +54,23 @@ public static class UIScaler
     )
     {
         return value * Scale;
+    }
+
+    //--------------
+    public static int ScaleValue
+    (
+        int value
+    )
+    {
+        return (int)(value * Scale);
+    }
+
+    //--------------
+    public static Vector2 ScaleValue
+    (
+        Vector2 value
+    )
+    {
+        return new Vector2(value.X * Scale, value.Y * Scale);
     }
 }

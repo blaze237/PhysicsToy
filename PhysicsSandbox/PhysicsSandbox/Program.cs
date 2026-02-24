@@ -6,19 +6,20 @@ using static Raylib_cs.Raylib;
 
 class Program
 {
-    public static readonly int c_screenWidth = 1000;
-    public static readonly int c_screenHeight = 1000;
+    public static readonly int c_screenWidth = 250;
+    public static readonly int c_screenHeight = 250;
     public static readonly float c_fixedTimeStep = 1f / 60f;
 
     static void Main()
     {
+        InitWindow(c_screenWidth, c_screenHeight, "Raylib C# Sandbox");
+
         float timeAccumulator = 0f;
         World world = new PathfindWorld();
         UIManager uiManager = UIManager.Instance;
 
         world._Init();
 
-        InitWindow(c_screenWidth, c_screenHeight, "Raylib C# Sandbox");
 
         //Debug only
         // bool checkboxValue = false;

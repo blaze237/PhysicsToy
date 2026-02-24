@@ -2,6 +2,7 @@
 using PhysicsSandbox.Core.UI;
 using PhysicsSandbox.TileRender;
 using PhysicsSandbox.Utils;
+using PhysicsToy.PathfindTester;
 using Raylib_cs;
 using System.Numerics;
 using static PhysicsSandbox.Core.UI.UIText;
@@ -19,6 +20,7 @@ public class PathfindWorld : World
     private Vector2Int m_startPos = new(-1, -1);
     private Vector2Int m_goalPos = new(-1, -1); 
     private DFSSolver? m_dfsSolver;
+    private InfoPanel_DFS m_infoPanel = new();
 
     //UI elements
     private UIElementID m_infoBoxID;
@@ -70,9 +72,7 @@ public class PathfindWorld : World
             }
         }
 
-        //TODO wrap all this ui in its own class or maybe have the concept of world ui managers?
-        m_infoBoxID = UIManager.Instance.CreateAndRegisterRoundedBox(new Vector2Int(25, 25), new Vector2Int(300, 100), new Color(0, 0, 0, 128));
-        UIManager.Instance.CreateAndRegisterText("Pathfinding Test", Color.White, FontStyle.Regular, new Vector2(30, 30), 25, 1);
+        m_infoPanel.Init();
 
     }
 
@@ -81,7 +81,7 @@ public class PathfindWorld : World
     (
     )
     {
-
+        m_infoPanel.Destroy();
     }
 
     //-----------------------

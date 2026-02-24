@@ -4,6 +4,8 @@ using Raylib_cs;
 
 namespace PhysicsSandbox.Core.UI;
 
+//TODO move all the scaling to occur in the ui manager not per element
+
 
 public class UIText : UIElement
 {
@@ -24,7 +26,7 @@ public class UIText : UIElement
     public FontStyle Style { get; set; }
     public Vector2 Position { get; set; }
     public int FontSize { get; set; }
-
+    public bool ScalePosition { get; set; }
 
     //----------
     public UIText
@@ -32,16 +34,17 @@ public class UIText : UIElement
         string i_text,
         Color i_color,
         FontStyle i_style,
-        Vector2 i_position,
-        int i_fontSize
+        Vector2Int i_position,
+        int i_fontSize,
+        bool i_scalePosition = true
     )
     {
         Text = i_text;
         Color = i_color;
         Style = i_style;
-        Position = i_position;
+        Position = i_position.ToVector2();
         FontSize = i_fontSize;
-    }
+        }
     
     //----------
     public override void Render
@@ -58,7 +61,9 @@ public class UIText : UIElement
                 font = m_defaultFontItalic;
                 break;
         }
-        Raylib.DrawTextEx(font, Text, Position, FontSize, 0, Color);
+        
+        Vector2 position = ScalePosition ? UIScaler.ScaleValue(Position) : Position;
+        Raylib.DrawTextEx(font, Text, position, UIScaler.ScaleValue(FontSize), 0, Color);
        
     }
 }
