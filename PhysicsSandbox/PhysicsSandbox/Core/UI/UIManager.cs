@@ -5,6 +5,7 @@ global using UILayerID = uint;
 using System;
 using System.Diagnostics;
 using System.Numerics;
+using PhysicsSandbox.Core.UI.Toolbar;
 using PhysicsSandbox.Utils;
 using Raylib_cs;
 using static PhysicsSandbox.Core.UI.UIText;
@@ -39,17 +40,17 @@ public sealed class UIManager
         UILayerID i_layerID = 0
     ) 
     {
-        m_elements[m_nextID] = i_uiElement;
-        m_elementToLayer[m_nextID] = i_layerID;
+        m_elements[i_uiElement.ID] = i_uiElement;
+        m_elementToLayer[i_uiElement.ID] = i_layerID;
 
         if (!m_layers.TryGetValue(i_layerID, out var layerSet))
         {
             layerSet = new HashSet<UIElementID>();
             m_layers[i_layerID] = layerSet;
         }
-        layerSet.Add(m_nextID);
+        layerSet.Add(i_uiElement.ID);
         
-        return m_nextID++; 
+        return i_uiElement.ID; 
     }
 
    
@@ -97,6 +98,18 @@ public sealed class UIManager
         }
     }
 
+    //------------
+    public void CreateToolbar
+    (
+        Vector2Int i_size,
+        Color i_color,
+        int i_bufferSize
+    )
+    {
+        UIToolbar toolbar = new UIToolbar(i_size, i_color, i_bufferSize, m_nextID++);
+        RegisterElement(toolbar, 0);
+    }
+
     //TODO take in screen space coords not raw pixel positions
 
     //-------------
@@ -109,7 +122,7 @@ public sealed class UIManager
         UILayerID i_layerID = 0
     )
     {
-        UICheckbox checkbox = new UICheckbox(i_position, i_label, i_getter, i_setter);
+        UICheckbox checkbox = new UICheckbox(i_position, i_label, i_getter, i_setter, m_nextID++);
         return RegisterElement(checkbox, i_layerID);
     }              
 
@@ -140,7 +153,7 @@ public sealed class UIManager
         UILayerID i_layerID = 0
     )
     {
-        UICheckbox checkbox = new UICheckbox(i_position, i_label, i_getter, i_setter, i_selectedColor, i_unselectedColor, i_labelColor);
+        UICheckbox checkbox = new UICheckbox(i_position, i_label, i_getter, i_setter, i_selectedColor, i_unselectedColor, i_labelColor, m_nextID++);
         return RegisterElement(checkbox, i_layerID);
     }     
 
@@ -158,7 +171,7 @@ public sealed class UIManager
     )
     {
         Vector2Int position = UIScaler.RelativeToAbsolute(i_position);
-        UICheckbox checkbox = new UICheckbox(position, i_label, i_getter, i_setter, i_selectedColor, i_unselectedColor, i_labelColor);
+        UICheckbox checkbox = new UICheckbox(position, i_label, i_getter, i_setter, i_selectedColor, i_unselectedColor, i_labelColor, m_nextID++);
         return RegisterElement(checkbox, i_layerID);
     }              
 
@@ -171,7 +184,7 @@ public sealed class UIManager
         UILayerID i_layerID = 0
     )
     {
-        UIBox box = new UIBox(i_position, i_size, i_color);
+        UIBox box = new UIBox(i_position, i_size, i_color, m_nextID++);
         return RegisterElement(box, i_layerID);
     }
 
@@ -186,7 +199,7 @@ public sealed class UIManager
     {
         Vector2Int position = UIScaler.RelativeToAbsolute(i_position);
         Vector2Int size = UIScaler.RelativeToAbsolute(i_size);
-        UIBox box = new UIBox(position, size, i_color, false /*No Scaling*/);
+        UIBox box = new UIBox(position, size, i_color, m_nextID++, false /*No Scaling*/);
         return RegisterElement(box, i_layerID);
     }
 
@@ -200,7 +213,7 @@ public sealed class UIManager
         UILayerID i_layerID = 0
     )
     {
-        UIBox box = new UIBox(i_position, i_size, i_rounding, i_color);
+        UIBox box = new UIBox(i_position, i_size, i_rounding, i_color, m_nextID++);
         return RegisterElement(box, i_layerID);
     }
 
@@ -216,7 +229,7 @@ public sealed class UIManager
     {
         Vector2Int position = UIScaler.RelativeToAbsolute(i_position);
         Vector2Int size = UIScaler.RelativeToAbsolute(i_size);
-        UIBox box = new UIBox(position, size, i_rounding, i_color, false /*No Scaling*/);
+        UIBox box = new UIBox(position, size, i_rounding, i_color, m_nextID++, false /*No Scaling*/);
         return RegisterElement(box, i_layerID);
     }
 
@@ -231,7 +244,7 @@ public sealed class UIManager
         UILayerID i_layerID = 0
     )
     {
-        UIText text = new UIText(i_text, i_color, i_style, i_position, i_fontSize);
+        UIText text = new UIText(i_text, i_color, i_style, i_position, i_fontSize, m_nextID++);
         return RegisterElement(text, i_layerID);
     }
 
@@ -247,7 +260,7 @@ public sealed class UIManager
     )
     {
         Vector2Int position = UIScaler.RelativeToAbsolute(i_position);
-        UIText text = new UIText(i_text, i_color, i_style, position, i_fontSize, false /*No Scaling*/);
+        UIText text = new UIText(i_text, i_color, i_style, position, i_fontSize, m_nextID++, false /*No Scaling*/);
         return RegisterElement(text, i_layerID);
     }
 

@@ -51,7 +51,7 @@ public abstract class World
         float i_alpha
     )
     {
-        m_renderer.Render(i_alpha);
+        m_renderer?.Render(i_alpha);
     }
 
     //-----------------------

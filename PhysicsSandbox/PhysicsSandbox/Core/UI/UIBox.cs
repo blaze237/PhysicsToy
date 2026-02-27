@@ -21,8 +21,10 @@ public class UIBox : UIElement
         Vector2Int i_position,
         Vector2Int i_size,
         Color i_color,
+        UIElementID i_id,
         bool i_scaled = true
     )
+    : base(i_id)
     {
         m_position = i_position;
         m_size = i_size;
@@ -37,8 +39,10 @@ public class UIBox : UIElement
         Vector2Int i_size,
         float i_rounding,
         Color i_color,
+        UIElementID i_id,
         bool i_scaled = true
     )
+    : base(i_id)
     {
         m_position = i_position;
         m_size = i_size;

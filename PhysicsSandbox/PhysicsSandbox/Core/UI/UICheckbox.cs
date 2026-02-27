@@ -28,8 +28,10 @@ public class UICheckbox : UIElement
         string i_label,
         Func<bool> i_getter,
         Action<bool> i_setter,
+        UIElementID i_id,
         bool i_scalePosition = true
     )
+    : base(i_id)
     {
         m_label = i_label;
         m_getter = i_getter;
@@ -49,9 +51,10 @@ public class UICheckbox : UIElement
         Color i_selectedColor,
         Color i_unselectedColor,
         Color i_labelColor, 
+        UIElementID i_id,
         bool i_scalePosition = true
     )
-    : this(i_position, i_label, i_getter, i_setter, i_scalePosition)
+    : this(i_position, i_label, i_getter, i_setter, i_id, i_scalePosition)
     {
         m_selectedColor = i_selectedColor;
         m_unselectedColor = i_unselectedColor;

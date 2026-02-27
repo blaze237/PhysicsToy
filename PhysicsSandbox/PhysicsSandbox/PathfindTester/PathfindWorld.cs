@@ -21,6 +21,8 @@ public class PathfindWorld : World
     private Vector2Int m_goalPos = new(-1, -1); 
     private DFSSolver? m_dfsSolver;
     private InfoPanel_DFS m_infoPanel = new();
+    private bool m_randomNeighbourExploration = false;
+    private bool m_diagonalMovement = false;
 
     //UI elements
     private UIElementID m_infoBoxID;
@@ -72,8 +74,7 @@ public class PathfindWorld : World
             }
         }
 
-        m_infoPanel.Init();
-
+        m_infoPanel.Init(m_randomNeighbourExploration, m_diagonalMovement);
     }
 
     //-----------------------
@@ -221,9 +222,7 @@ public class PathfindWorld : World
                 m_tiles[clickedTileX, clickedTileY].State = TileState.Goal;
                 m_goalPos = new Vector2Int(clickedTileX, clickedTileY);
 
-                bool allowDiagonal = false;
-                bool randomizeNeighborOrder = true;
-                m_dfsSolver = new DFSSolver(ref m_tiles, m_startPos, m_goalPos, allowDiagonal, randomizeNeighborOrder);
+                m_dfsSolver = new DFSSolver(ref m_tiles, m_startPos, m_goalPos, m_diagonalMovement, m_randomNeighbourExploration);
                 m_worldState = WorldState.Pathfinding;
             }
             m_tiles[clickedTileX, clickedTileY].m_dirty = true;

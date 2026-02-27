@@ -36,15 +36,18 @@ public class UIText : UIElement
         FontStyle i_style,
         Vector2Int i_position,
         int i_fontSize,
+        UIElementID i_id,
         bool i_scalePosition = true
     )
+    : base(i_id)
     {
         Text = i_text;
         Color = i_color;
         Style = i_style;
         Position = i_position.ToVector2();
         FontSize = i_fontSize;
-        }
+        ScalePosition = i_scalePosition;
+    }
     
     //----------
     public override void Render
