@@ -1,6 +1,7 @@
 using System.Numerics;
 using PhysicsSandbox.Utils;
 using Raylib_cs;
+using static PhysicsSandbox.Core.UI.FontManager;
 
 namespace PhysicsSandbox.Core.UI;
 
@@ -9,16 +10,7 @@ namespace PhysicsSandbox.Core.UI;
 
 public class UIText : UIElement
 {
-    public enum FontStyle
-    {
-        Regular,
-        Bold,
-        Italic
-    }
-    //Members
-    private static readonly Font m_defaultFont = Raylib.LoadFont("Assets/Roboto-Regular.ttf");
-    private static readonly Font m_defaultFontBold = Raylib.LoadFont("Assets/Roboto-Bold.ttf");
-    private static readonly Font m_defaultFontItalic = Raylib.LoadFont("Assets/Roboto-Italic.ttf");
+    
     
 
     public string Text { get; set; }
@@ -53,20 +45,9 @@ public class UIText : UIElement
     public override void Render
     (
     )
-    {
-        Font font = m_defaultFont;
-        switch (Style)
-        {
-            case FontStyle.Bold:
-                font = m_defaultFontBold;
-                break;
-            case FontStyle.Italic:
-                font = m_defaultFontItalic;
-                break;
-        }
-        
+    {     
         Vector2 position = ScalePosition ? UIScaler.ScaleValue(Position) : Position;
-        Raylib.DrawTextEx(font, Text, position, UIScaler.ScaleValue(FontSize), 0, Color);
+        Raylib.DrawTextEx(FontManager.GetFontForStyle(Style), Text, position, UIScaler.ScaleValue(FontSize), 0, Color);
        
     }
 }

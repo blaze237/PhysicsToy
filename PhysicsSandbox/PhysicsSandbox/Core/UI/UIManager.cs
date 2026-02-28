@@ -1,17 +1,13 @@
 //Global defines for ui types
 global using UIElementID = uint;
 global using UILayerID = uint;
-
-using System;
-using System.Diagnostics;
 using System.Numerics;
 using PhysicsSandbox.Core.UI.Toolbar;
 using PhysicsSandbox.Utils;
 using Raylib_cs;
 using static PhysicsSandbox.Core.UI.FontManager;
-using static PhysicsSandbox.Core.UI.UIText;
 
-
+//TODO: Add a way for the ui manager to flag inputs as claimed for this tick, so that the game window doesn't process them
 namespace PhysicsSandbox.Core.UI;
 public sealed class UIManager
 {
@@ -21,6 +17,10 @@ public sealed class UIManager
     private static readonly UIManager m_instance = new UIManager();
     public static UIManager Instance => m_instance;
 
+    private readonly Raylib_cs.Color c_toolbarColor = Raylib_cs.Color.DarkGray;
+    private readonly int c_toolbarBuffer = 15;
+    public readonly int c_toolbarHeight = (int)(0.03 * Program.c_screenHeight); //This should probably live somewhere else
+
     //Each ui element gets a unique ID
     private UIElementID m_nextID = 0;
 
@@ -29,11 +29,23 @@ public sealed class UIManager
     private Dictionary<UIElementID, UIElement> m_elements = new();
     private Dictionary<UIElementID, UILayerID> m_elementToLayer = new(); 
 
+    public UIToolbar Toolbar { get; private set; }
 
-    //TODO: Add a way for the ui manager to flag inputs as claimed for this tick, so that the game window doesn't process them
-
+    
 
     //Methods
+
+    //Private singleton constructor
+    private UIManager() 
+    {
+        Toolbar = new UIToolbar(new Vector2Int(Program.c_screenWidth, c_toolbarHeight),
+        c_toolbarColor,
+        c_toolbarBuffer,
+        m_nextID++);
+
+        RegisterElement(Toolbar, 0);
+    }
+
     //-------------
     private UIElementID RegisterElement
     (
@@ -98,20 +110,6 @@ public sealed class UIManager
             }
         }
     }
-
-    //------------
-    public void CreateToolbar
-    (
-        Vector2Int i_size,
-        Color i_color,
-        int i_bufferSize
-    )
-    {
-        UIToolbar toolbar = new UIToolbar(i_size, i_color, i_bufferSize, m_nextID++);
-        RegisterElement(toolbar, 0);
-    }
-
-    //TODO take in screen space coords not raw pixel positions
 
     //-------------
     public UIElementID CreateAndRegisterCheckbox
@@ -264,9 +262,6 @@ public sealed class UIManager
         UIText text = new UIText(i_text, i_color, i_style, position, i_fontSize, m_nextID++, false /*No Scaling*/);
         return RegisterElement(text, i_layerID);
     }
-
-    //Private singleton constructor
-    private UIManager() {}
 
   
 }

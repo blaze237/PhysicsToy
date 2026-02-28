@@ -1,5 +1,6 @@
 ﻿using PhysicsSandbox.Core;
 using PhysicsSandbox.Core.UI;
+using PhysicsSandbox.Core.UI.Toolbar;
 using PhysicsSandbox.TileRender;
 using PhysicsSandbox.Utils;
 using PhysicsToy.PathfindTester;
@@ -23,6 +24,7 @@ public class PathfindWorld : World
     private InfoPanel_DFS m_infoPanel = new();
     private bool m_randomNeighbourExploration = false;
     private bool m_diagonalMovement = false;
+    private ToolbarText m_statusText;
 
     //UI elements
     private UIElementID m_infoBoxID;
@@ -50,6 +52,10 @@ public class PathfindWorld : World
                 m_tiles[i, j] = new Tile();
             }
         }
+
+        UIManager.Instance.Toolbar.AddText("Alg: DFS", 0.075f, Color.White);
+        m_statusText = UIManager.Instance.Toolbar.AddText("Status: Obstacles", 0.155f, Color.Green);
+        UIManager.Instance.Toolbar.AddButton("Reset", 0.05f, () => Reset());
     }
 
     //-----------------------
@@ -158,6 +164,10 @@ public class PathfindWorld : World
         m_dfsSolver = null;
         m_worldState = WorldState.CreateObstacles;
         m_solveTimeAccumulator = 0.0f;
+
+        m_statusText.Text = "Status: Obstacles";
+        m_statusText.SetBaseWidthMult(0.155f);
+        m_statusText.Color = Color.Green;
     }
 
     //-----------------------
@@ -174,6 +184,9 @@ public class PathfindWorld : World
             if(m_dfsSolver.Result != GraphSolveResult.InProgress)
             {
                 m_worldState = WorldState.Finished;
+                m_statusText.Text = "Status: Done";
+                m_statusText.SetBaseWidthMult(0.115f);
+                m_statusText.Color = Color.Red;
 
                 ClearExploredTiles();
             }
@@ -215,15 +228,23 @@ public class PathfindWorld : World
             {
                 m_tiles[clickedTileX, clickedTileY].State = TileState.Start;
                 m_startPos = new Vector2Int(clickedTileX, clickedTileY);
+                m_statusText.Text = "Status: Goal";
+                m_statusText.SetBaseWidthMult(0.11f);
                 m_worldState = WorldState.RouteSelectionGoal;
             }
             else if(m_worldState == WorldState.RouteSelectionGoal)
             {
+                if(m_tiles[clickedTileX, clickedTileY].State != TileState.Open)
+                {
+                    return;
+                }
                 m_tiles[clickedTileX, clickedTileY].State = TileState.Goal;
                 m_goalPos = new Vector2Int(clickedTileX, clickedTileY);
 
                 m_dfsSolver = new DFSSolver(ref m_tiles, m_startPos, m_goalPos, m_diagonalMovement, m_randomNeighbourExploration);
                 m_worldState = WorldState.Pathfinding;
+                m_statusText.SetBaseWidthMult(0.115f);
+                m_statusText.Text = "Status: Solve";
             }
             m_tiles[clickedTileX, clickedTileY].m_dirty = true;
         }
@@ -255,6 +276,8 @@ public class PathfindWorld : World
         if(Raylib.IsKeyPressed(KeyboardKey.Enter))
         {
             m_worldState = WorldState.RouteSelectionStart;
+            m_statusText.Text = "Status: Start";
+            m_statusText.SetBaseWidthMult(0.115f);
         }
     }
 

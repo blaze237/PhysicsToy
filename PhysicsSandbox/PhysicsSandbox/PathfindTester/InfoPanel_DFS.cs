@@ -5,6 +5,7 @@ using PhysicsSandbox.Core.UI;
 using PhysicsSandbox.Utils;
 using PhysicsToy.Core.UI;
 using Raylib_cs;
+using static PhysicsSandbox.Core.UI.FontManager;
 using static PhysicsSandbox.Core.UI.UIText;
 
 namespace PhysicsToy.PathfindTester;
@@ -17,6 +18,7 @@ class InfoPanel_DFS : WorldUIManager
         bool i_diagonalMovement
     )
     {
+        
         m_elements.Add(UIManager.Instance.CreateAndRegisterRoundedBox_Relative(new Vector2(0.575f, 0.025f), new Vector2(0.4f, 0.5f), new Color(0, 0, 0, 128)));
         m_elements.Add(UIManager.Instance.CreateAndRegisterText_Relative("Algorithm: DFS", Color.White, FontStyle.Bold, new Vector2(0.6f, 0.05f), 25, 1));
         m_elements.Add(UIManager.Instance.CreateAndRegisterText_Relative("Instructions:", Color.White, FontStyle.Regular, new Vector2(0.6f, 0.1f), 20, 1));

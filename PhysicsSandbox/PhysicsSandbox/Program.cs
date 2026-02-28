@@ -10,24 +10,16 @@ class Program
     public static readonly int c_screenWidth = 1000;
     public static readonly int c_screenHeight = 1000;
     public static readonly float c_fixedTimeStep = 1f / 60f;
-    private static readonly bool c_toolbarEnabled = true;
-    private static readonly Raylib_cs.Color c_toolbarColor = Raylib_cs.Color.DarkGray;
 
     static void Main()
     {
-        int toolbarWidth = c_screenWidth;
-        int toolbarHeight = c_toolbarEnabled ? (int)(0.03 * c_screenHeight) : 0; 
-        InitWindow(c_screenWidth, c_screenHeight + toolbarHeight, "Raylib C# Sandbox");
+        InitWindow(c_screenWidth, c_screenHeight + UIManager.Instance.c_toolbarHeight, "Raylib C# Sandbox");
 
         float timeAccumulator = 0f;
         World world = new PathfindWorld();
         UIManager uiManager = UIManager.Instance;
 
-        if (c_toolbarEnabled)
-        {
-            int buffer = 10; //make scale
-            uiManager.CreateToolbar(new Vector2Int(toolbarWidth, toolbarHeight), c_toolbarColor, buffer);
-        }
+     
 
         world._Init();
 
