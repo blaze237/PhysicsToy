@@ -91,7 +91,7 @@ public class UICheckbox : UIElement
     }
 
 
-
+    //--------------
     public override void Update(float i_deltaTime) 
     {
         //Detect if the user clicked on the checkbox

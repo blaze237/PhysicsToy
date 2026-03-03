@@ -51,6 +51,8 @@ public class ToolbarButton : ToolbarElement
     //-------------
     public override void Render()
     {
+        base.Render();
+        
         bool isHovered = Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), RenderBounds);
         Color color = isHovered ? m_hoverColor : m_defaultColor;
         if (Raylib.IsMouseButtonDown(MouseButton.Left) && isHovered)

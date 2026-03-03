@@ -24,7 +24,11 @@ public class PathfindWorld : World
     private InfoPanel_DFS m_infoPanel = new();
     private bool m_randomNeighbourExploration = false;
     private bool m_diagonalMovement = false;
+
+    //Toolbar ui elements
     private ToolbarText m_statusText;
+    private ToolbarCheckbox m_randomNeighbourExplorationCheckbox;
+    private ToolbarCheckbox m_diagonalMovementCheckbox;
 
     //UI elements
     private UIElementID m_infoBoxID;
@@ -54,8 +58,11 @@ public class PathfindWorld : World
         }
 
         UIManager.Instance.Toolbar.AddText("Alg: DFS", 0.075f, Color.White);
+        m_randomNeighbourExplorationCheckbox = UIManager.Instance.Toolbar.AddCheckbox("Random Explore", () => m_randomNeighbourExploration, (value) => m_randomNeighbourExploration = value, 0.18f);
+        m_diagonalMovementCheckbox = UIManager.Instance.Toolbar.AddCheckbox("Diagonals", () => m_diagonalMovement, (value) => m_diagonalMovement = value, 0.12f);
         m_statusText = UIManager.Instance.Toolbar.AddText("Status: Obstacles", 0.155f, Color.Green);
         UIManager.Instance.Toolbar.AddButton("Reset", 0.05f, () => Reset());
+       
     }
 
     //-----------------------
@@ -168,6 +175,9 @@ public class PathfindWorld : World
         m_statusText.Text = "Status: Obstacles";
         m_statusText.SetBaseWidthMult(0.155f);
         m_statusText.Color = Color.Green;
+
+        m_randomNeighbourExplorationCheckbox.Locked = false;
+        m_diagonalMovementCheckbox.Locked = false;
     }
 
     //-----------------------
@@ -245,6 +255,9 @@ public class PathfindWorld : World
                 m_worldState = WorldState.Pathfinding;
                 m_statusText.SetBaseWidthMult(0.115f);
                 m_statusText.Text = "Status: Solve";
+
+                m_randomNeighbourExplorationCheckbox.Locked = true;
+                m_diagonalMovementCheckbox.Locked = true;
             }
             m_tiles[clickedTileX, clickedTileY].m_dirty = true;
         }

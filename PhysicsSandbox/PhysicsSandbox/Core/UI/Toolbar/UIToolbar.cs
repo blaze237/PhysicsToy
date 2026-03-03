@@ -24,7 +24,7 @@ public class UIToolbar : UIElement
     //Size shouldnt ever be that big anyway so the null checks aren't a big deal
     private List<ToolbarElement> m_elements = new();
 
-    
+    private bool test = true;
     //--------------
     public UIToolbar
     (
@@ -49,6 +49,8 @@ public class UIToolbar : UIElement
         // AddElement(new ToolbarText((int)(m_size.X * 0.04f), "Test", Color.Green));
         // AddElement(new ToolbarText((int)(m_size.X * 0.04f), "Test", Color.Blue));
         // AddElement(new ToolbarButton((int)(m_size.X * 0.04f), "Test", () => { }));
+
+        //AddElement(new ToolbarCheckbox((int)(m_size.X * 0.08f), "Test", () => test, (value) => { test = value; }));
     } 
 
     //--------------
@@ -64,7 +66,7 @@ public class UIToolbar : UIElement
         for (int i = 0; i < m_elements.Count; i++)
         {
             var element = m_elements[i];
-            if (element == null) 
+            if (element == null || !element.Enabled) 
             {
                 continue;   
             }
@@ -80,6 +82,23 @@ public class UIToolbar : UIElement
             }
 
             seperatorPosition += m_bufferSize / 2;
+        }
+    }
+
+    //--------------
+    public override void Update
+    (
+        float i_deltaTime
+    )
+    {
+        for (int i = 0; i < m_elements.Count; i++)
+        {
+            var element = m_elements[i];
+            if (element == null || !element.Enabled) 
+            {
+                continue;   
+            }
+            element.Update(i_deltaTime);
         }
     }
 
@@ -114,7 +133,7 @@ public class UIToolbar : UIElement
         int elementHeight = m_size.Y - m_bufferSize;
         foreach (var element in m_elements)
         {
-            if (element == null) 
+            if (element == null || !element.Enabled) 
             {
                 continue;
             }
@@ -154,6 +173,19 @@ public class UIToolbar : UIElement
         return button;
     }
     
+    //-------------
+    public ToolbarCheckbox AddCheckbox
+    (
+        string i_label,
+        Func<bool> i_getter,
+        Action<bool> i_setter,
+        float i_widthMultiplier //Best guess :(
+    )
+    {
+        ToolbarCheckbox checkbox = new((int)(m_size.X * i_widthMultiplier), i_label, i_getter, i_setter);
+        AddElement(checkbox);
+        return checkbox;
+    }
 
 
  }

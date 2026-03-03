@@ -17,9 +17,7 @@ class Program
 
         float timeAccumulator = 0f;
         World world = new PathfindWorld();
-        UIManager uiManager = UIManager.Instance;
-
-     
+        UIManager uiManager = UIManager.Instance; 
 
         world._Init();
 

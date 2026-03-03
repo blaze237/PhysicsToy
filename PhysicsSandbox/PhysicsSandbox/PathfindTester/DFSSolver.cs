@@ -3,6 +3,8 @@ using PhysicsSandbox.Utils;
 
 namespace PhysicsSandbox.PathfindTester;
 
+
+//TODO diag is iffy, if its semi blocked in it fails to find a path
 public class DFSSolver : GraphSolver
 {
     // Members
