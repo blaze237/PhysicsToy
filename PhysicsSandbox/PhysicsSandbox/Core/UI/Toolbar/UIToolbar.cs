@@ -22,7 +22,7 @@ public class UIToolbar : UIElement
     private int m_elementHeight;
     //Sparse array to enable stable indices even when elements are removed
     //Size shouldnt ever be that big anyway so the null checks aren't a big deal
-    private List<ToolbarElement> m_elements = new();
+    private List<ToolbarElement> m_elements = new(); //TODO have two lists, one for right side elements and one for left side elements
 
     private bool test = true;
     //--------------
@@ -51,6 +51,7 @@ public class UIToolbar : UIElement
         // AddElement(new ToolbarButton((int)(m_size.X * 0.04f), "Test", () => { }));
 
         //AddElement(new ToolbarCheckbox((int)(m_size.X * 0.08f), "Test", () => test, (value) => { test = value; }));
+       // AddElement(new ToolbarSlider((int)(m_size.X * 0.1f), 0f, 100f, 75f, (value) => { Console.WriteLine(value); }, "Speed"));
     } 
 
     //--------------
@@ -185,6 +186,22 @@ public class UIToolbar : UIElement
         ToolbarCheckbox checkbox = new((int)(m_size.X * i_widthMultiplier), i_label, i_getter, i_setter);
         AddElement(checkbox);
         return checkbox;
+    }
+    
+    //-------------
+    public ToolbarSlider AddSlider
+    (
+        float i_widthMultiplier,
+        float i_minValue,
+        float i_maxValue,
+        float i_initialValue,
+        Action<float> i_onChange,
+        string i_label = ""
+    )
+    {
+        ToolbarSlider slider = new((int)(m_size.X * i_widthMultiplier), i_minValue, i_maxValue, i_initialValue, i_onChange, i_label);
+        AddElement(slider);
+        return slider;
     }
 
 

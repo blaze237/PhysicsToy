@@ -12,9 +12,11 @@ namespace PhysicsSandbox.PathfindTester;
 
 public class PathfindWorld : World
 {
+    private const float c_minTimeStep = 0.01f;
+    private const float c_maxTimeStep = 0.4f;
     // Members
     private const int c_gridSize = 50;
-    private const float c_solveTimeStep = 0.1f;
+    private float m_solveTimeStep = 0.1f;
     private float m_solveTimeAccumulator = 0.0f;
     private List2D<Tile> m_tiles = new List2D<Tile>(c_gridSize, c_gridSize);
     private WorldState m_worldState = WorldState.CreateObstacles;
@@ -57,12 +59,13 @@ public class PathfindWorld : World
             }
         }
 
-        UIManager.Instance.Toolbar.AddText("Alg: DFS", 0.075f, Color.White);
+        //Add toolbar elements
+        UIManager.Instance.Toolbar.AddText("Alg: DFS", 0.075f, Color.SkyBlue);
         m_randomNeighbourExplorationCheckbox = UIManager.Instance.Toolbar.AddCheckbox("Random Explore", () => m_randomNeighbourExploration, (value) => m_randomNeighbourExploration = value, 0.18f);
         m_diagonalMovementCheckbox = UIManager.Instance.Toolbar.AddCheckbox("Diagonals", () => m_diagonalMovement, (value) => m_diagonalMovement = value, 0.12f);
         m_statusText = UIManager.Instance.Toolbar.AddText("Status: Obstacles", 0.155f, Color.Green);
-        UIManager.Instance.Toolbar.AddButton("Reset", 0.05f, () => Reset());
-       
+        UIManager.Instance.Toolbar.AddSlider(0.125f, c_maxTimeStep, c_minTimeStep, m_solveTimeStep, (value) => { m_solveTimeStep = value; }, "Speed");
+        UIManager.Instance.Toolbar.AddButton("Reset", 0.05f, () => Reset());     
     }
 
     //-----------------------
@@ -187,7 +190,7 @@ public class PathfindWorld : World
     )
     {
         m_solveTimeAccumulator += i_deltaTime;
-        if(m_solveTimeAccumulator >= c_solveTimeStep)
+        if(m_solveTimeAccumulator >= m_solveTimeStep)
         {
             m_solveTimeAccumulator = 0.0f;
             m_dfsSolver.SolveNextStep();

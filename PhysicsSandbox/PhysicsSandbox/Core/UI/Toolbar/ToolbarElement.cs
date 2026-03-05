@@ -40,6 +40,7 @@ public abstract class ToolbarElement
         BaseWidth = i_baseWidth;
     }
 
+    //-------------
     public virtual void Render() 
     {
         if (c_debugDrawBounds)
