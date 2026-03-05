@@ -13,12 +13,13 @@ public class DFSSolver : GraphSolver
     private Stack<Vector2Int> m_stack;   
     private Vector2Int m_lastExploredNode;
     //We use these to define the order in which we explore neighbors. Each pair of values defines a neighbor
-    private static readonly int[] m_diagNeighbors = [-1, -1, 0, 1, 1, 1, 0, -1];
-    private static readonly int[] m_noDiagNeighbors = [0, 1, 1, 0, 0, -1, -1, 0];
-    private int[] m_neighbors;
+    private static readonly Vector2Int[] m_diagNeighbors = [new(-1, -1), new(0, -1), new(1, -1), new(-1, 0), new(1, 0), new (-1, 1), new (0, 1), new (1, 1)];  // [new(-1, -1), new(-1, 0), new(-1, 1), new(0, -1), new (0, 1), new (1, -1), new (1, 0), new (1, 1)];
+    private static readonly Vector2Int[] m_noDiagNeighbors = [new(0, 1), new(1, 0), new(0, -1), new(-1, 0)];
+    private Vector2Int[] m_neighbors;
     //The order in which to visit the neighbour pairs defined above. Stored in an array to allow randomization
-    private int[] m_neighbourIndexOrdering = [0, 1, 2, 3];
-
+    private int[] m_nonDiagNeighbourIndexOrdering = [0, 1, 2, 3];
+    private int[] m_diagNeighbourIndexOrdering = [0, 1, 2, 3, 4, 5, 6, 7];
+    private int[] m_neighbourIndexOrdering;
 
     // Methods
     //-----------------------
@@ -37,15 +38,17 @@ public class DFSSolver : GraphSolver
         m_lastExploredNode = new Vector2Int(-1, -1);   
         m_stack.Push(i_start);
 
-        m_neighbors = i_allowDiag ? m_diagNeighbors : m_noDiagNeighbors;
-
         if(i_randomizeNeighborOrder)
         {
-            m_neighbourIndexOrdering = Enumerable.Range(0, 4).OrderBy(x => Random.Shared.Next()).ToArray();
+            m_diagNeighbourIndexOrdering = Enumerable.Range(0, 8).OrderBy(x => Random.Shared.Next()).ToArray();
+            m_nonDiagNeighbourIndexOrdering = Enumerable.Range(0, 4).OrderBy(x => Random.Shared.Next()).ToArray();
         }
 
-
+        m_neighbors = i_allowDiag ? m_diagNeighbors : m_noDiagNeighbors;
+        m_neighbourIndexOrdering = i_allowDiag ? m_diagNeighbourIndexOrdering : m_nonDiagNeighbourIndexOrdering;
     }
+
+  
 
     //-----------------------
     public override void SolveNextStep
@@ -119,17 +122,17 @@ public class DFSSolver : GraphSolver
         }
 
         //Otherwise, we need to explore our neighbours
-        for(int nIdx = 0; nIdx < 4; ++nIdx)
+        for(int nIdx = 0; nIdx < m_neighbourIndexOrdering.Length; ++nIdx)
         {
             int shuffledIdx = m_neighbourIndexOrdering[nIdx];
-            int i = m_neighbors[shuffledIdx * 2];
-            int j = m_neighbors[shuffledIdx * 2 + 1];
+            Vector2Int offset = m_neighbors[shuffledIdx];
             //skip the current node
-            if(i == 0 && j == 0)
+            if(offset.X == 0 && offset.Y == 0)
             {
+                System.Diagnostics.Debug.Assert(false, "Should not reach here");
                 continue;
             }
-            Vector2Int neighbor = new Vector2Int(current.X + i, current.Y + j);
+            Vector2Int neighbor = current + offset;
             //Skip neighbors that are out of bounds
             if(neighbor.X < 0 || neighbor.X >= m_graph.m_width || neighbor.Y < 0 || neighbor.Y >= m_graph.m_height)
             {

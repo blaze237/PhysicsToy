@@ -22,11 +22,6 @@ class Program
         world._Init();
 
 
-        //Debug only
-        // bool checkboxValue = false;
-        // uiManager.CreateAndRegisterRoundedBox(new Vector2Int(25, 25), new Vector2Int(150, 100), new Raylib_cs.Color(0, 0, 0, 128));
-        // uiManager.CreateAndRegisterCheckbox(new Vector2Int(50, 50), "Test", () => checkboxValue, (value) => checkboxValue = value);
-
         while (!WindowShouldClose())
         {
             float frameTime = GetFrameTime();

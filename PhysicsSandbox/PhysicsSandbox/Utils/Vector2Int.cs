@@ -75,12 +75,72 @@ public class Vector2Int
     }
 
     //-----------------------
+    public static Vector2Int operator +
+    (
+        Vector2Int a,
+        Vector2Int b
+    )
+    {
+        return new Vector2Int(a.X + b.X, a.Y + b.Y);
+    }
+
+    //-----------------------
+    public static Vector2Int operator -
+    (
+        Vector2Int a,
+        Vector2Int b
+    )
+    {
+        return new Vector2Int(a.X - b.X, a.Y - b.Y);
+    }
+
+    //-----------------------
+    public static Vector2Int operator *
+    (
+        Vector2Int a,
+        int scalar
+    )
+    {
+        return new Vector2Int(a.X * scalar, a.Y * scalar);
+    }
+
+    //-----------------------
+    public static Vector2Int operator *
+    (
+        int scalar,
+        Vector2Int a
+    )
+    {
+        return a * scalar;
+    }
+
+    //-----------------------
+    public static Vector2Int operator /
+    (
+        Vector2Int a,
+        int scalar
+    )
+    {
+        return new Vector2Int(a.X / scalar, a.Y / scalar);
+    }
+
+    //-----------------------
+    public static Vector2Int operator -
+    (
+        Vector2Int a
+    )
+    {
+        return new Vector2Int(-a.X, -a.Y);
+    }
+
+    //-----------------------
     public Vector2 ToVector2
     (
     )
     {
         return new Vector2(X, Y);
     }
+    
 
   
 }
