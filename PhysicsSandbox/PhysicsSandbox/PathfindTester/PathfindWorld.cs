@@ -2,6 +2,7 @@
 using PhysicsSandbox.Core.UI;
 using PhysicsSandbox.Core.UI.Toolbar;
 using PhysicsSandbox.GraphSolvers.PathfindTester;
+using PhysicsSandbox.PathfindTester.GraphSolvers;
 using PhysicsSandbox.TileRender;
 using PhysicsSandbox.TileRender.TileRenderer;
 using PhysicsSandbox.Utils;
@@ -9,12 +10,15 @@ using PhysicsToy.PathfindTester;
 using Raylib_cs;
 using System.Numerics;
 using static PhysicsSandbox.Core.UI.UIText;
+using static PhysicsSandbox.PathfindTester.GraphSolvers.SolverFactory;
 
 namespace PhysicsSandbox.PathfindTester;
 
 public class PathfindWorld : World
 {
-    private const float c_minTimeStep = 0.01f;
+   
+    
+    private const float c_minTimeStep = 0.002f;
     private const float c_maxTimeStep = 0.4f;
 
     // Members
@@ -25,12 +29,14 @@ public class PathfindWorld : World
     private WorldState m_worldState = WorldState.CreateObstacles;
     private Vector2Int m_startPos = new(-1, -1);
     private Vector2Int m_goalPos = new(-1, -1); 
-    private DFSSolver? m_dfsSolver;
+    private GraphSolver? m_solver;
+    private Algorithm m_algorithm = Algorithm.BFS;
     private InfoPanel_DFS m_infoPanel = new();
     private bool m_randomNeighbourExploration = false;
     private bool m_diagonalMovement = false;
 
     //Toolbar ui elements
+    private ToolbarText m_algorithmText;
     private ToolbarText m_statusText;
     private ToolbarCheckbox m_randomNeighbourExplorationCheckbox;
     private ToolbarCheckbox m_diagonalMovementCheckbox;
@@ -60,7 +66,7 @@ public class PathfindWorld : World
         }
 
         //Add toolbar elements
-        UIManager.Instance.Toolbar.AddText("Alg: DFS", 0.075f, Color.SkyBlue);
+        m_algorithmText = UIManager.Instance.Toolbar.AddText("Alg:" + m_algorithm.ToString(), 0.075f, Color.SkyBlue);
         m_randomNeighbourExplorationCheckbox = UIManager.Instance.Toolbar.AddCheckbox("Random Explore", () => m_randomNeighbourExploration, (value) => m_randomNeighbourExploration = value, 0.18f);
         m_diagonalMovementCheckbox = UIManager.Instance.Toolbar.AddCheckbox("Diagonals", () => m_diagonalMovement, (value) => m_diagonalMovement = value, 0.12f);
         m_statusText = UIManager.Instance.Toolbar.AddText("Status: Obstacles", 0.155f, Color.Green);
@@ -86,7 +92,7 @@ public class PathfindWorld : World
             }
         }
 
-        m_infoPanel.Init(m_randomNeighbourExploration, m_diagonalMovement);
+        m_infoPanel.Init();
     }
 
     //-----------------------
@@ -113,6 +119,26 @@ public class PathfindWorld : World
         if(Raylib.IsKeyPressed(KeyboardKey.R))
         {
             Reset();
+        }
+
+        //Handle algorithm selection (only when not pathfinding)
+        if(m_worldState != WorldState.Pathfinding && m_worldState != WorldState.Finished)
+        {
+           if(Raylib.IsKeyPressed(KeyboardKey.One))
+           {
+              m_algorithm = Algorithm.BFS;
+              m_algorithmText.Text = "Alg: BFS";
+           }
+           else if(Raylib.IsKeyPressed(KeyboardKey.Two))
+           {
+              m_algorithm = Algorithm.DFS;
+              m_algorithmText.Text = "Alg: DFS";
+           }
+        //    else if(Raylib.IsKeyPressed(KeyboardKey.Three))
+        //    {
+        //       m_algorithm = Algorithm.AStar;
+        //       m_algorithmText.Text = "Alg: A*";
+        //    }
         }
 
         //Handle world state transitions
@@ -165,7 +191,7 @@ public class PathfindWorld : World
         m_goalPos = new(-1, -1);
         
         //Reset solver
-        m_dfsSolver = null;
+        m_solver = null;
         m_worldState = WorldState.CreateObstacles;
         m_solveTimeAccumulator = 0.0f;
 
@@ -187,8 +213,8 @@ public class PathfindWorld : World
         if(m_solveTimeAccumulator >= m_solveTimeStep)
         {
             m_solveTimeAccumulator = 0.0f;
-            m_dfsSolver.SolveNextStep();
-            if(m_dfsSolver.Result != GraphSolveResult.InProgress)
+            m_solver.SolveNextStep();
+            if(m_solver.Result != GraphSolveResult.InProgress)
             {
                 m_worldState = WorldState.Finished;
                 m_statusText.Text = "Status: Done";
@@ -244,7 +270,7 @@ public class PathfindWorld : World
                 m_tiles[clickedTileX, clickedTileY].State = TileState.Goal;
                 m_goalPos = new Vector2Int(clickedTileX, clickedTileY);
 
-                m_dfsSolver = new DFSSolver(ref m_tiles, m_startPos, m_goalPos, m_diagonalMovement, m_randomNeighbourExploration);
+                m_solver = SolverFactory.CreateSolver(m_algorithm, ref m_tiles, m_startPos, m_goalPos, m_diagonalMovement, m_randomNeighbourExploration);
                 m_worldState = WorldState.Pathfinding;
                 m_statusText.SetBaseWidthMult(0.115f);
                 m_statusText.Text = "Status: Solve";
