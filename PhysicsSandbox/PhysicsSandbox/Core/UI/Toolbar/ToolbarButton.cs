@@ -63,6 +63,7 @@ public class ToolbarButton : ToolbarElement
         {
             m_onClick.Invoke();
         }
+        
         Raylib.DrawRectangleRec(RenderBounds, color);
         Vector2 position = RenderBounds.Position;
         position += new Vector2(UIScaler.ScaleValue(0.5f), UIScaler.ScaleValue(0.5f));

@@ -1,30 +1,28 @@
 using System.Diagnostics;
-using System.Net.NetworkInformation;
 using PhysicsSandbox.Utils;
 using Raylib_cs;
 
 namespace PhysicsSandbox.Core.UI.Toolbar;
 
 
-//TODO This whole thing is a bit magic numbersy but it will do the job for now
 public class UIToolbar : UIElement
 {
-    //Members
     private static readonly Color c_seperatorColor = Color.LightGray;
     private static readonly float c_seperatorWidthPercent = 0.0025f;
     private static readonly float c_seperatorHeightPercent = 0.9f;
+    //Members
     private readonly Vector2Int m_size;
     private readonly Color m_color;    
-    private readonly int m_bufferSize;
-    private int m_seperatorWidth;
+    private readonly int m_bufferSize; //How much space to leave between elements and the edge of the toolbar
+    private int m_seperatorWidth; //Size in pixels of the seperator between elements
     private int m_elementVerticalPadding;
     private int m_elementStartHeight;
     private int m_elementHeight;
     //Sparse array to enable stable indices even when elements are removed
     //Size shouldnt ever be that big anyway so the null checks aren't a big deal
-    private List<ToolbarElement> m_elements = new(); //TODO have two lists, one for right side elements and one for left side elements
+    private List<ToolbarElement> m_elements = new(); 
+    //TODO have two lists, one for right side elements and one for left side elements>
 
-    private bool test = true;
     //--------------
     public UIToolbar
     (
@@ -39,19 +37,11 @@ public class UIToolbar : UIElement
         m_color = i_color;
         m_bufferSize = i_bufferSize;
 
+        //Its all a bit gross and hardcoded but the UIScaler makes it work
         m_seperatorWidth = (int)(m_size.X * c_seperatorWidthPercent);
         m_elementVerticalPadding = (int)(m_size.Y * c_seperatorHeightPercent * 0.25f);
         m_elementStartHeight = Program.c_screenHeight + m_elementVerticalPadding;
         m_elementHeight = (int)(m_size.Y * c_seperatorHeightPercent - m_elementVerticalPadding);
-
-        // AddElement(new ToolbarText((int)(m_size.X * 0.04f), "Test", Color.White));
-        // AddElement(new ToolbarText((int)(m_size.X * 0.04f), "Test", Color.Red));
-        // AddElement(new ToolbarText((int)(m_size.X * 0.04f), "Test", Color.Green));
-        // AddElement(new ToolbarText((int)(m_size.X * 0.04f), "Test", Color.Blue));
-        // AddElement(new ToolbarButton((int)(m_size.X * 0.04f), "Test", () => { }));
-
-        //AddElement(new ToolbarCheckbox((int)(m_size.X * 0.08f), "Test", () => test, (value) => { test = value; }));
-       // AddElement(new ToolbarSlider((int)(m_size.X * 0.1f), 0f, 100f, 75f, (value) => { Console.WriteLine(value); }, "Speed"));
     } 
 
     //--------------
@@ -66,6 +56,7 @@ public class UIToolbar : UIElement
 
         for (int i = 0; i < m_elements.Count; i++)
         {
+            //Skip deleted or disabled elements
             var element = m_elements[i];
             if (element == null || !element.Enabled) 
             {
@@ -81,7 +72,6 @@ public class UIToolbar : UIElement
                 Rectangle separatorBounds = new(seperatorPosition, m_elementStartHeight, m_seperatorWidth, (int)(m_size.Y * c_seperatorHeightPercent - m_elementVerticalPadding));
                 Raylib.DrawRectangleRec(separatorBounds, c_seperatorColor);
             }
-
             seperatorPosition += m_bufferSize / 2;
         }
     }
@@ -94,6 +84,7 @@ public class UIToolbar : UIElement
     {
         for (int i = 0; i < m_elements.Count; i++)
         {
+            //Skip deleted or disabled elements
             var element = m_elements[i];
             if (element == null || !element.Enabled) 
             {
@@ -126,14 +117,12 @@ public class UIToolbar : UIElement
     }
 
     //-------------
-    public void UpdateElementBounds
-    (
-    )
+    public void UpdateElementBounds()
     {
         int x = m_bufferSize;
-        int elementHeight = m_size.Y - m_bufferSize;
         foreach (var element in m_elements)
         {
+            //Skip deleted or disabled elements
             if (element == null || !element.Enabled) 
             {
                 continue;
@@ -203,7 +192,6 @@ public class UIToolbar : UIElement
         AddElement(slider);
         return slider;
     }
-
 
  }
 

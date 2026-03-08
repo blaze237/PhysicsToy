@@ -5,10 +5,12 @@ namespace PhysicsSandbox.Core.UI.Toolbar;
 
 public class ToolbarText : ToolbarElement
 {
+    //Members
     private static readonly int c_fontSize = 24;
     public string Text { get; set; }
     public Color Color { get; set; }
 
+    //-------------
     public ToolbarText
     (
         int i_baseWidth,
@@ -21,6 +23,7 @@ public class ToolbarText : ToolbarElement
        Color = i_color;
     }
 
+    //-------------
     public override void Render
     (
     )

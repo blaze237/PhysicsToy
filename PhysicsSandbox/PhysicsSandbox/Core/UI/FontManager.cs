@@ -15,6 +15,7 @@ public class FontManager
     private static readonly Font m_defaultFontBold = Raylib.LoadFont("Assets/Roboto-Bold.ttf");
     private static readonly Font m_defaultFontItalic = Raylib.LoadFont("Assets/Roboto-Italic.ttf");
 
+    //-------------------
     public static Font GetFontForStyle
     (
         FontStyle i_style

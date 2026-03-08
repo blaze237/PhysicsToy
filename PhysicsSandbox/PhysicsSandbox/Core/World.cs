@@ -8,9 +8,7 @@ public abstract class World
 
     // Methods
     //-----------------------
-    public void _Init
-    (
-    )
+    public void _Init()
     {
         m_renderer = CreateRenderer();
         Init();

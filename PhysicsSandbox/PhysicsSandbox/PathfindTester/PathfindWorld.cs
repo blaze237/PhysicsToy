@@ -1,7 +1,9 @@
 ﻿using PhysicsSandbox.Core;
 using PhysicsSandbox.Core.UI;
 using PhysicsSandbox.Core.UI.Toolbar;
+using PhysicsSandbox.GraphSolvers.PathfindTester;
 using PhysicsSandbox.TileRender;
+using PhysicsSandbox.TileRender.TileRenderer;
 using PhysicsSandbox.Utils;
 using PhysicsToy.PathfindTester;
 using Raylib_cs;
@@ -14,6 +16,7 @@ public class PathfindWorld : World
 {
     private const float c_minTimeStep = 0.01f;
     private const float c_maxTimeStep = 0.4f;
+
     // Members
     private const int c_gridSize = 50;
     private float m_solveTimeStep = 0.1f;
@@ -31,7 +34,6 @@ public class PathfindWorld : World
     private ToolbarText m_statusText;
     private ToolbarCheckbox m_randomNeighbourExplorationCheckbox;
     private ToolbarCheckbox m_diagonalMovementCheckbox;
-
     //UI elements
     private UIElementID m_infoBoxID;
 
@@ -47,9 +49,7 @@ public class PathfindWorld : World
 
     // Methods
     //-----------------------
-    public PathfindWorld
-    (
-    )
+    public PathfindWorld()
     {
         for(int i = 0; i < c_gridSize; i++)
         {
@@ -69,17 +69,13 @@ public class PathfindWorld : World
     }
 
     //-----------------------
-    public override Renderer CreateRenderer
-    (
-    )
+    public override Renderer CreateRenderer()
     {
         return new TileRenderer(c_gridSize, Program.c_screenWidth, Program.c_screenHeight);
     }
 
     //-----------------------
-    public override void Init
-    (
-    )
+    public override void Init()
     {
         for (int i = 0; i < c_gridSize; i++)
         {
@@ -94,9 +90,7 @@ public class PathfindWorld : World
     }
 
     //-----------------------
-    public override void Destroy
-    (
-    )
+    public override void Destroy()
     {
         m_infoPanel.Destroy();
     }
@@ -121,6 +115,7 @@ public class PathfindWorld : World
             Reset();
         }
 
+        //Handle world state transitions
         switch (m_worldState)
         {
             case WorldState.CreateObstacles:
@@ -137,6 +132,7 @@ public class PathfindWorld : World
                 break;
         }
 
+        //Update tile colours
         for (int i = 0; i < c_gridSize; i++)
         {
             for(int j = 0; j < c_gridSize; j++)
@@ -152,9 +148,7 @@ public class PathfindWorld : World
     }
 
     //-----------------------
-    private void Reset
-    (
-    )
+    private void Reset()
     {
         
         //Reset tiles to open
@@ -207,9 +201,7 @@ public class PathfindWorld : World
     }
 
     //-----------------------
-    void ClearExploredTiles
-    (
-    )
+    void ClearExploredTiles()
     {
         for (int i = 0; i < c_gridSize; i++)
         {
@@ -225,9 +217,7 @@ public class PathfindWorld : World
     }
 
     //-----------------------
-    private void UpdateRouteSelection
-    (
-    )
+    private void UpdateRouteSelection()
     {
         if (Raylib.IsMouseButtonPressed(MouseButton.Left))
         {
@@ -267,9 +257,7 @@ public class PathfindWorld : World
     }
 
     //-----------------------
-    private void UpdateObstacleCreation
-    (
-    )
+    private void UpdateObstacleCreation()
     {
         GetTileCoordsFromScreenCoords(Raylib.GetMousePosition(), out int clickedTileX, out int clickedTileY);
         if (clickedTileX < 0 || clickedTileX >= c_gridSize || clickedTileY < 0 || clickedTileY >= c_gridSize)
@@ -325,8 +313,6 @@ public class PathfindWorld : World
         }
     }
 
-   
-
     //-------------------------------
     public void GetTileCoordsFromScreenCoords
     (
@@ -338,7 +324,4 @@ public class PathfindWorld : World
         o_tileX = i_screenPos.X / ((TileRenderer)m_renderer).TileSize;
         o_tileY = i_screenPos.Y / ((TileRenderer)m_renderer).TileSize;
     }
-
-   
-
 }

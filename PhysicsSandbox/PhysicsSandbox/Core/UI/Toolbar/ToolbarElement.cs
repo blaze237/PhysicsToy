@@ -7,7 +7,7 @@ public abstract class ToolbarElement
 {  
     protected static readonly bool c_debugDrawBounds = true;
 
-    //-------------
+    //Members
     public Rectangle RenderBounds { get; set; } 
     public int BaseWidth { get; private set; }
     private bool m_enabled = true;
@@ -49,6 +49,10 @@ public abstract class ToolbarElement
         }
     }
 
-    public virtual void Update(float i_deltaTime) { }
+    //-------------
+    public virtual void Update(float i_deltaTime) 
+    { 
+        //Default implementation does nothing
+    }
 }
 

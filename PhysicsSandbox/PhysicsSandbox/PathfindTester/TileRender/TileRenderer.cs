@@ -3,7 +3,7 @@ using PhysicsSandbox.Utils;
 using Raylib_cs;
 using System.Diagnostics;
 
-namespace PhysicsSandbox.TileRender;
+namespace PhysicsSandbox.TileRender.TileRenderer;
 
 
 class TileRenderer : Renderer
@@ -46,8 +46,6 @@ class TileRenderer : Renderer
         TileSize = i_screenWidth / GridSize;
 
     }
-
-   
 
     //-------------------------------
     public override void RenderImpl

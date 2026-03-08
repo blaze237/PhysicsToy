@@ -97,10 +97,7 @@ public sealed class UIManager
     }
 
     //-------------   
-    public void Render
-    (
-
-    )
+    public void Render()
     {
        foreach (var layer in m_layers)
         {

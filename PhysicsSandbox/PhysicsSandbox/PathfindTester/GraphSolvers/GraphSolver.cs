@@ -1,4 +1,5 @@
 ﻿using PhysicsSandbox.Core;
+using PhysicsSandbox.PathfindTester;
 using PhysicsSandbox.Utils;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PhysicsSandbox.PathfindTester;
+namespace PhysicsSandbox.GraphSolvers.PathfindTester;
 
 //-----------------------
 public enum GraphSolveResult

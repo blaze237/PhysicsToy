@@ -1,10 +1,10 @@
 using System;
+using PhysicsSandbox.PathfindTester;
 using PhysicsSandbox.Utils;
 
-namespace PhysicsSandbox.PathfindTester;
+namespace PhysicsSandbox.GraphSolvers.PathfindTester;
 
 
-//TODO diag is iffy, if its semi blocked in it fails to find a path
 public class DFSSolver : GraphSolver
 {
     // Members
@@ -13,7 +13,7 @@ public class DFSSolver : GraphSolver
     private Stack<Vector2Int> m_stack;   
     private Vector2Int m_lastExploredNode;
     //We use these to define the order in which we explore neighbors. Each pair of values defines a neighbor
-    private static readonly Vector2Int[] m_diagNeighbors = [new(-1, -1), new(0, -1), new(1, -1), new(-1, 0), new(1, 0), new (-1, 1), new (0, 1), new (1, 1)];  // [new(-1, -1), new(-1, 0), new(-1, 1), new(0, -1), new (0, 1), new (1, -1), new (1, 0), new (1, 1)];
+    private static readonly Vector2Int[] m_diagNeighbors = [new(-1, -1), new(0, -1), new(1, -1), new(-1, 0), new(1, 0), new (-1, 1), new (0, 1), new (1, 1)];
     private static readonly Vector2Int[] m_noDiagNeighbors = [new(0, 1), new(1, 0), new(0, -1), new(-1, 0)];
     private Vector2Int[] m_neighbors;
     //The order in which to visit the neighbour pairs defined above. Stored in an array to allow randomization
@@ -25,7 +25,7 @@ public class DFSSolver : GraphSolver
     //-----------------------
     public DFSSolver
     (
-        ref List2D<Tile> i_graph,
+        ref List2D<PhysicsSandbox.PathfindTester.Tile> i_graph,
         Vector2Int i_start,
         Vector2Int i_end,
         bool i_allowDiag,
@@ -78,8 +78,6 @@ public class DFSSolver : GraphSolver
         }
         Vector2Int current = m_stack.Pop();
      
-        //todo, some gui, controls for the rando and diags
-
         //Flag the tile as active so it gets rendered as such, but only if its not the start or end tile
         if(current != m_start && current != m_end)
         {
@@ -162,8 +160,4 @@ public class DFSSolver : GraphSolver
         }
 
     }
-
-
-  
 }
-

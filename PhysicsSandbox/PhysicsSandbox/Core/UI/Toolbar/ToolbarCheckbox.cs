@@ -6,6 +6,7 @@ namespace PhysicsSandbox.Core.UI.Toolbar;
 
 public class ToolbarCheckbox : ToolbarElement
 {
+    //Members
     private static readonly int c_fontSize = 24;
     private Vector2 m_size = new(20, 20); //Pre scaled size of the checkbox
     private Rectangle m_boxBounds;

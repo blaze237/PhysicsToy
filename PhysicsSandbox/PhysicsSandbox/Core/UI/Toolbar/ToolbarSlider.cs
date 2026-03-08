@@ -8,8 +8,8 @@ public class ToolbarSlider : ToolbarElement
 {
     private static readonly int c_fontSize = 22;
 
-    //Value from 0 to 1
-    public float Delta { get; private set; }
+   //Members
+    public float Delta { get; private set; }  //Value from 0 to 1
     private float m_minValue;
     private float m_maxValue;
     private Action<float> m_onChange;
