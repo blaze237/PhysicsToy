@@ -105,11 +105,6 @@ public abstract class GraphSolver
 
         m_lastExploredNode = i_current;
 
-        //we've already visited this node, skip it
-        if(m_visited[i_current.X , i_current.Y])
-        {
-            return true;
-        }
 
         //This node is blocked, skip it
         if(m_graph[i_current.X, i_current.Y].State == TileState.Closed)

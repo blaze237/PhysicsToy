@@ -22,6 +22,7 @@ public class BFSSolver : GraphSolver
     {
         m_visited = new List2D<bool>(i_graph.m_width, i_graph.m_height);
         m_parents = new List2D<Vector2Int>(i_graph.m_width, i_graph.m_height);
+        m_visited[i_start.X, i_start.Y] = true;
         m_queue.Enqueue(i_start);
     }
 
@@ -29,7 +30,7 @@ public class BFSSolver : GraphSolver
     //--------------------
     public override void SolveNextStep()
     {
-         Vector2Int current = m_queue.Dequeue();
+        Vector2Int current = m_queue.Dequeue();
         if(PreSolveNextStep(current))
         {
             return;
@@ -57,6 +58,8 @@ public class BFSSolver : GraphSolver
             {
                 continue;
             }
+
+            m_visited[neighbor.X, neighbor.Y] = true;
             //Skip neighbors that are blocked
             if(m_graph[neighbor.X, neighbor.Y].State == TileState.Closed)
             {

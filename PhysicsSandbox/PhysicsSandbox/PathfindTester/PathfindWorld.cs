@@ -182,8 +182,11 @@ public class PathfindWorld : World
         {
             for (int j = 0; j < c_gridSize; j++)
             {
-                m_tiles[i, j].State = TileState.Open;
-                m_tiles[i, j].m_dirty = true;
+                if(m_tiles[i,j].State != TileState.Open && m_tiles[i,j].State != TileState.Closed)
+                {
+                    m_tiles[i, j].State = TileState.Open;
+                    m_tiles[i, j].m_dirty = true;
+                }
             }
         }
 

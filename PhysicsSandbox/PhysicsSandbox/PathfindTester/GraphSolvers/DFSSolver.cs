@@ -31,7 +31,7 @@ public class DFSSolver : GraphSolver
     (
     )
     { 
-        //I dont get how this is even possible
+        //Stack empty means all reachable nodes explored without reaching goal (e.g., goal walled off)
         if(m_stack.Count == 0)
         {
             Result = GraphSolveResult.NoPathFound;
@@ -66,6 +66,7 @@ public class DFSSolver : GraphSolver
             {
                 continue;
             }
+            m_visited[neighbor.X, neighbor.Y] = true;
             //Skip neighbors that are blocked
             if(m_graph[neighbor.X, neighbor.Y].State == TileState.Closed)
             {
