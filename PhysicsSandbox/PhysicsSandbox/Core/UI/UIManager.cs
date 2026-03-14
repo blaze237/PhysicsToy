@@ -47,7 +47,13 @@ public sealed class UIManager
     }
 
     //-------------
-    private UIElementID RegisterElement
+    public UIElementID GetNextID()
+    {
+        return m_nextID++;
+    }
+
+    //-------------
+    public  UIElementID RegisterElement
     (
         UIElement i_uiElement,
         UILayerID i_layerID = 0
@@ -106,6 +112,15 @@ public sealed class UIManager
                 m_elements[id].Render();
             }
         }
+    }
+
+    //-------------
+    public T? GetElementAs<T>
+    (
+        UIElementID i_id
+    ) where T : UIElement
+    {
+        return m_elements[i_id] as T;
     }
 
     //-------------

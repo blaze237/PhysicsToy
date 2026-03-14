@@ -1,3 +1,4 @@
+using PhysicsSandbox.Core;
 using PhysicsSandbox.Utils;
 using Raylib_cs;
 using System;
@@ -28,8 +29,8 @@ public static class UIScaler
         Vector2 relative
     )
     {
-        Debug.Assert(relative.X >= 0 && relative.X <= 1);
-        Debug.Assert(relative.Y >= 0 && relative.Y <= 1);
+        DebugUtils.Assert(relative.X >= 0 && relative.X <= 1);
+        DebugUtils.Assert(relative.Y >= 0 && relative.Y <= 1);
         float screenWidth = Raylib.GetScreenWidth();
         float screenHeight = Raylib.GetScreenHeight();
         return new Vector2Int((int)(relative.X * screenWidth), (int)(relative.Y * screenHeight));

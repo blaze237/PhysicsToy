@@ -1,9 +1,9 @@
 using System;
+using PhysicsSandbox.Core;
 using PhysicsSandbox.PathfindTester;
 using PhysicsSandbox.Utils;
 
 namespace PhysicsSandbox.GraphSolvers.PathfindTester;
-
 
 public class DFSSolver : GraphSolver
 {
@@ -52,7 +52,7 @@ public class DFSSolver : GraphSolver
             //skip the current node
             if(offset.X == 0 && offset.Y == 0)
             {
-                System.Diagnostics.Debug.Assert(false, "Should not reach here");
+                DebugUtils.Assert(false, "Should not reach here");
                 continue;
             }
             Vector2Int neighbor = current + offset;

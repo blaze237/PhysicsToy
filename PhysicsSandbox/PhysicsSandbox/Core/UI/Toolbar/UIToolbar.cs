@@ -50,9 +50,7 @@ public class UIToolbar : UIElement
     )
     {     
         Rectangle bounds = new(0, Program.c_screenHeight, m_size.X, m_size.Y);
-        Raylib.DrawRectangleRec(bounds, m_color);
-        int seperatorPosition = m_bufferSize;
-       
+        Raylib.DrawRectangleRec(bounds, m_color);       
 
         for (int i = 0; i < m_elements.Count; i++)
         {
@@ -65,14 +63,17 @@ public class UIToolbar : UIElement
             
             element.Render();
 
-            seperatorPosition += element.BaseWidth + m_bufferSize /2;
             // Draw separator if not last element
             if (i < m_elements.Count - 1)
             {
+                float rightEdge = element.RenderBounds.X + element.RenderBounds.Width;
+                float leftEdge = m_elements[i + 1].RenderBounds.X;
+                float mid = (leftEdge - rightEdge) * 0.5f;
+                int seperatorPosition = (int)(rightEdge + mid - m_seperatorWidth * 0.5f);
+
                 Rectangle separatorBounds = new(seperatorPosition, m_elementStartHeight, m_seperatorWidth, (int)(m_size.Y * c_seperatorHeightPercent - m_elementVerticalPadding));
                 Raylib.DrawRectangleRec(separatorBounds, c_seperatorColor);
             }
-            seperatorPosition += m_bufferSize / 2;
         }
     }
 
@@ -132,7 +133,7 @@ public class UIToolbar : UIElement
             element.RenderBounds = new Rectangle(x, m_elementStartHeight, element.BaseWidth, m_elementHeight);
             x += width;
 
-            Debug.Assert(x <= Program.c_screenWidth, "Toolbar element extends beyond screen width");
+            DebugUtils.Assert(x <= Program.c_screenWidth, "Toolbar element extends beyond screen width");
         }    
     }
 
@@ -185,10 +186,11 @@ public class UIToolbar : UIElement
         float i_maxValue,
         float i_initialValue,
         Action<float> i_onChange,
-        string i_label = ""
+        string i_label = "",
+        float i_textOffsetFraction = 0.25f
     )
     {
-        ToolbarSlider slider = new((int)(m_size.X * i_widthMultiplier), i_minValue, i_maxValue, i_initialValue, i_onChange, i_label);
+        ToolbarSlider slider = new((int)(m_size.X * i_widthMultiplier), i_minValue, i_maxValue, i_initialValue, i_onChange, i_label, i_textOffsetFraction);
         AddElement(slider);
         return slider;
     }

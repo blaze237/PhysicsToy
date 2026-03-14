@@ -1,4 +1,5 @@
 using System;
+using PhysicsSandbox.Core;
 using PhysicsSandbox.PathfindTester;
 using PhysicsSandbox.Utils;
 
@@ -24,12 +25,22 @@ public class BFSSolver : GraphSolver
         m_parents = new List2D<Vector2Int>(i_graph.m_width, i_graph.m_height);
         m_visited[i_start.X, i_start.Y] = true;
         m_queue.Enqueue(i_start);
+
+        // while(m_queue.Count > 0)
+        // {
+        //     SolveNextStep();
+        // }
     }
 
 
     //--------------------
     public override void SolveNextStep()
     {
+        if(m_queue.Count == 0)
+        {
+            return;
+        }
+        
         Vector2Int current = m_queue.Dequeue();
         if(PreSolveNextStep(current))
         {
@@ -44,7 +55,7 @@ public class BFSSolver : GraphSolver
             //skip the current node
             if(offset.X == 0 && offset.Y == 0)
             {
-                System.Diagnostics.Debug.Assert(false, "Should not reach here");
+                DebugUtils.Assert(false, "Should not reach here");
                 continue;
             }
             Vector2Int neighbor = current + offset;

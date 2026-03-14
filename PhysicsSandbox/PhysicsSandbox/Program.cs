@@ -1,7 +1,10 @@
-﻿using System.Drawing;
+﻿using System.Diagnostics;
+using System.Drawing;
 using PhysicsSandbox.Core;
 using PhysicsSandbox.Core.UI;
+using PhysicsSandbox.GraphSolvers.PathfindTester;
 using PhysicsSandbox.PathfindTester;
+using PhysicsSandbox.PathfindTester.GraphSolvers;
 using PhysicsSandbox.Utils;
 using static Raylib_cs.Raylib;
 
@@ -9,18 +12,18 @@ class Program
 {
     public static readonly int c_screenWidth = 1000;
     public static readonly int c_screenHeight = 1000;
-    public static readonly float c_fixedTimeStep = 1f / 60f;
+    public static float c_fixedTimeStep = 1f / 60f;
 
     static void Main()
     {
         InitWindow(c_screenWidth, c_screenHeight + UIManager.Instance.c_toolbarHeight, "Raylib C# Sandbox");
-
         float timeAccumulator = 0f;
         World world = new PathfindWorld();
         UIManager uiManager = UIManager.Instance; 
 
-        world._Init();
+        world._Init();  
 
+        Raylib_cs.Raylib.SetTargetFPS(0);
 
         while (!WindowShouldClose())
         {
@@ -41,7 +44,7 @@ class Program
             //Variable Update
             uiManager.Update(frameTime); //UI is updated first so that it can claim inputs (once implemented)
             world._Update(frameTime);
-
+           
             //Render
             BeginDrawing();
             ClearBackground(Raylib_cs.Color.White); //Should the renderer handle this

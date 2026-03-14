@@ -5,7 +5,7 @@ namespace PhysicsSandbox.Core.UI.Toolbar;
 
 public abstract class ToolbarElement
 {  
-    protected static readonly bool c_debugDrawBounds = true;
+    protected static readonly bool c_debugDrawBounds = false;
 
     //Members
     public Rectangle RenderBounds { get; set; } 

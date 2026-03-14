@@ -8,7 +8,9 @@ public enum TileState
     Goal,
     Path,
     Explored,
-    Active
+    Active,
+
+    Invalid
 }
 
 //-----------------------

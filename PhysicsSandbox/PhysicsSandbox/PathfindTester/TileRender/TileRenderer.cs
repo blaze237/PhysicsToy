@@ -41,8 +41,8 @@ class TileRenderer : Renderer
         }
 
         //TODO support non square screens by keeping the grid square and centering it on the screen, for now just assert that the screen is square and that the tile size is an integer
-        Debug.Assert(i_screenWidth % i_gridSize == 0, "Screen width must be divisible by size X");
-        Debug.Assert(i_screenHeight == i_screenWidth, "Screen height must be equal to screen width");
+        DebugUtils.Assert((i_screenWidth % i_gridSize) == 0, "Screen width must be divisible by size X");
+        DebugUtils.Assert(i_screenHeight == i_screenWidth, "Screen height must be equal to screen width");
         TileSize = i_screenWidth / GridSize;
 
     }

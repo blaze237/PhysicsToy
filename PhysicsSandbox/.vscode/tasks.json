@@ -7,6 +7,8 @@
             "type": "process",
             "args": [
                 "build",
+                "--configuration",
+                "Debug",
                 "${workspaceFolder}/PhysicsSandbox/PhysicsSandbox.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary;ForceNoAlign"
@@ -33,7 +35,9 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/PhysicsSandbox/PhysicsSandbox.csproj"
+                "${workspaceFolder}/PhysicsSandbox/PhysicsSandbox.csproj",
+                "--configuration",
+                "Debug"
             ],
             "problemMatcher": "$msCompile"
         }

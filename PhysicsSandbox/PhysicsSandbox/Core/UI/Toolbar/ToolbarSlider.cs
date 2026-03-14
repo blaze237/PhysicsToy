@@ -10,6 +10,7 @@ public class ToolbarSlider : ToolbarElement
 
    //Members
     public float Delta { get; private set; }  //Value from 0 to 1
+    public float StepSize {get; set;} //When non-zero, snap to steps of this size
     private float m_minValue;
     private float m_maxValue;
     private Action<float> m_onChange;
@@ -17,7 +18,9 @@ public class ToolbarSlider : ToolbarElement
     private Color m_fillColor = Color.SkyBlue;
     private bool m_isDragging = false;
     private string m_label;
-    
+    private bool m_inverted = false;
+    private float m_textOffsetFraction;    
+
     //----------------
     public ToolbarSlider
     (
@@ -26,15 +29,26 @@ public class ToolbarSlider : ToolbarElement
         float i_maxValue,
         float i_initialValue,
         Action<float> i_onChange,
-        string i_label = ""
+        string i_label = "",
+        float i_textOffsetFraction = 0.25f
     )
     : base(i_baseWidth)
     {
+        //This should support small to big and big to small, currently the delta is wrong
+        if (i_minValue > i_maxValue && i_initialValue != i_minValue)
+        {
+            m_inverted = true;
+        }
         m_minValue = i_minValue;
         m_maxValue = i_maxValue;
-        Delta = (i_initialValue - m_minValue) / (m_maxValue - m_minValue);
+        Delta = MathF.Abs((i_initialValue - m_minValue) / (m_maxValue - m_minValue));
+        if (m_inverted)
+        {
+            Delta = 1 - Delta;
+        }
         m_onChange = i_onChange;
         m_label = i_label;
+        m_textOffsetFraction = i_textOffsetFraction;
     }
 
     //-------------
@@ -55,7 +69,7 @@ public class ToolbarSlider : ToolbarElement
         if (!string.IsNullOrEmpty(m_label))
         {
             Vector2 position = RenderBounds.Position;
-            position.X += RenderBounds.Width / 4;
+            position.X += RenderBounds.Width * m_textOffsetFraction;
             position += new Vector2(0, UIScaler.ScaleValue(0.5f));
             Raylib.DrawTextEx(FontManager.GetFontForStyle(FontManager.FontStyle.Regular), m_label, position, UIScaler.ScaleValue(c_fontSize), 0, Color.White);
         }
@@ -69,19 +83,36 @@ public class ToolbarSlider : ToolbarElement
         float i_deltaTime
     )
     {        
-        if (Raylib.IsMouseButtonDown(MouseButton.Left) )
+        if(Raylib.IsMouseButtonPressed(MouseButton.Left))
         {
             Vector2 mousePos = Raylib.GetMousePosition();
-            if (Raylib.CheckCollisionPointRec(mousePos, RenderBounds) || m_isDragging)
+            if (Raylib.CheckCollisionPointRec(mousePos, RenderBounds))
             {
                 m_isDragging = true;
-                // Calculate new value based on mouse position
-                float normalizedX = (mousePos.X - RenderBounds.X) / RenderBounds.Width;
+            }
+        }
+
+        if (Raylib.IsMouseButtonDown(MouseButton.Left) && m_isDragging)
+        {
+            Vector2 mousePos = Raylib.GetMousePosition();
+            // Calculate new value based on mouse position
+            float normalizedX = (mousePos.X - RenderBounds.X) / RenderBounds.Width;
+            normalizedX = MathF.Max(0f, MathF.Min(1f, normalizedX));
+            Delta = normalizedX;
+            float newValue = float.Lerp(m_minValue, m_maxValue, normalizedX);
+            
+            if (StepSize > 0f)
+            {
+                newValue = MathF.Round(newValue / StepSize) * StepSize;
+                newValue = MathF.Max(m_minValue, MathF.Min(m_maxValue, newValue));
+            
+                // Update Delta to match the snapped value
+                normalizedX = (newValue - m_minValue) / (m_maxValue - m_minValue);
                 normalizedX = MathF.Max(0f, MathF.Min(1f, normalizedX));
                 Delta = normalizedX;
-                float newValue = float.Lerp(m_minValue, m_maxValue, normalizedX);
-                m_onChange(newValue);
             }
+            
+            m_onChange(newValue);    
         }
         else
         {

@@ -16,13 +16,8 @@ namespace PhysicsSandbox.PathfindTester;
 
 public class PathfindWorld : World
 {
-   
-    
-    private const float c_minTimeStep = 0.002f;
-    private const float c_maxTimeStep = 0.4f;
-
     // Members
-    private const int c_gridSize = 50;
+    private const int c_gridSize = 100;
     private float m_solveTimeStep = 0.1f;
     private float m_solveTimeAccumulator = 0.0f;
     private List2D<Tile> m_tiles = new List2D<Tile>(c_gridSize, c_gridSize);
@@ -31,13 +26,13 @@ public class PathfindWorld : World
     private Vector2Int m_goalPos = new(-1, -1); 
     private GraphSolver? m_solver;
     private Algorithm m_algorithm = Algorithm.BFS;
-    private InfoPanel_DFS m_infoPanel = new();
+    private InfoPanel_PathWorld m_infoPanel = new();
     private bool m_randomNeighbourExploration = false;
     private bool m_diagonalMovement = false;
+    private int m_brushRadius = 1; // Radius 0 -> single tile, 1 -> 3x3, 2 -> 5x5, etc.
 
     //Toolbar ui elements
     private ToolbarText m_algorithmText;
-    private ToolbarText m_statusText;
     private ToolbarCheckbox m_randomNeighbourExplorationCheckbox;
     private ToolbarCheckbox m_diagonalMovementCheckbox;
     //UI elements
@@ -66,12 +61,14 @@ public class PathfindWorld : World
         }
 
         //Add toolbar elements
-        m_algorithmText = UIManager.Instance.Toolbar.AddText("Alg:" + m_algorithm.ToString(), 0.075f, Color.SkyBlue);
-        m_randomNeighbourExplorationCheckbox = UIManager.Instance.Toolbar.AddCheckbox("Random Explore", () => m_randomNeighbourExploration, (value) => m_randomNeighbourExploration = value, 0.18f);
+        m_randomNeighbourExplorationCheckbox = UIManager.Instance.Toolbar.AddCheckbox("Rand Neighbour", () => m_randomNeighbourExploration, (value) => m_randomNeighbourExploration = value, 0.18f);
         m_diagonalMovementCheckbox = UIManager.Instance.Toolbar.AddCheckbox("Diagonals", () => m_diagonalMovement, (value) => m_diagonalMovement = value, 0.12f);
-        m_statusText = UIManager.Instance.Toolbar.AddText("Status: Obstacles", 0.155f, Color.Green);
-        UIManager.Instance.Toolbar.AddSlider(0.125f, c_maxTimeStep, c_minTimeStep, m_solveTimeStep, (value) => { m_solveTimeStep = value; }, "Speed");
-        UIManager.Instance.Toolbar.AddButton("Reset", 0.05f, () => Reset());     
+        UIManager.Instance.Toolbar.AddButton(" Clear", 0.055f, ClearObstacles);     
+        UIManager.Instance.Toolbar.AddButton(" Reset", 0.06f, Reset);     
+        UIManager.Instance.Toolbar.AddSlider(0.1f, Program.c_fixedTimeStep, 0.00004f, Program.c_fixedTimeStep, (value) => { Program.c_fixedTimeStep = value; }, "Speed");
+        //Int slider for brush radius
+        ToolbarSlider brushSlider = UIManager.Instance.Toolbar.AddSlider(0.125f, 0, 5, 0, (value) => { m_brushRadius = (int)value; }, "Brush Rad", 0.15f);
+        brushSlider.StepSize = 1f;
     }
 
     //-----------------------
@@ -102,18 +99,9 @@ public class PathfindWorld : World
     }
 
     //-----------------------
-    public override void FixedUpdate
-    (
-        float i_fixedDeltaTime
-    )
-    {
-       
-    }
-
-    //-----------------------
     public override void Update
     (
-        float i_deltaTime
+        float i_fixedDeltaTime
     )
     {
         if(Raylib.IsKeyPressed(KeyboardKey.R))
@@ -127,17 +115,17 @@ public class PathfindWorld : World
            if(Raylib.IsKeyPressed(KeyboardKey.One))
            {
               m_algorithm = Algorithm.BFS;
-              m_algorithmText.Text = "Alg: BFS";
+              m_infoPanel.SetAlgorithmText("BFS", Color.Gold);
            }
            else if(Raylib.IsKeyPressed(KeyboardKey.Two))
            {
               m_algorithm = Algorithm.DFS;
-              m_algorithmText.Text = "Alg: DFS";
+              m_infoPanel.SetAlgorithmText("DFS", Color.Gold);
            }
         //    else if(Raylib.IsKeyPressed(KeyboardKey.Three))
         //    {
         //       m_algorithm = Algorithm.AStar;
-        //       m_algorithmText.Text = "Alg: A*";
+        //       m_infoPanel.SetAlgorithmText("A*", Color.Gold);
         //    }
         }
 
@@ -151,14 +139,11 @@ public class PathfindWorld : World
             case WorldState.RouteSelectionGoal:
                 UpdateRouteSelection();
                 break;
-            case WorldState.Pathfinding:
-                UpdatePathfinding(i_deltaTime);
-                break;
-            case WorldState.Finished:
+            default:
                 break;
         }
 
-        //Update tile colours
+         //Update tile colours
         for (int i = 0; i < c_gridSize; i++)
         {
             for(int j = 0; j < c_gridSize; j++)
@@ -174,10 +159,43 @@ public class PathfindWorld : World
     }
 
     //-----------------------
+    public override void FixedUpdate
+    (
+        float i_deltaTime
+    )
+    {
+        if(m_worldState == WorldState.Pathfinding)
+        {
+            UpdatePathfinding(i_deltaTime);
+        } 
+    }
+
+
+    //-----------------------
+    private void ClearObstacles()
+    {
+        if(m_worldState == WorldState.Pathfinding)
+        {
+            return;
+        }
+
+        for (int i = 0; i < c_gridSize; i++)
+        {
+            for (int j = 0; j < c_gridSize; j++)
+            {
+                if(m_tiles[i,j].State == TileState.Closed)
+                {
+                    m_tiles[i, j].State = TileState.Open;
+                    m_tiles[i, j].m_dirty = true;
+                }
+            }
+        }
+    }
+
+    //-----------------------
     private void Reset()
     {
-        
-        //Reset tiles to open
+        //Clear pathfinding state but keep obstacles
         for (int i = 0; i < c_gridSize; i++)
         {
             for (int j = 0; j < c_gridSize; j++)
@@ -198,9 +216,7 @@ public class PathfindWorld : World
         m_worldState = WorldState.CreateObstacles;
         m_solveTimeAccumulator = 0.0f;
 
-        m_statusText.Text = "Status: Obstacles";
-        m_statusText.SetBaseWidthMult(0.155f);
-        m_statusText.Color = Color.Green;
+        m_infoPanel.SetStatusText("Obstacles", Color.White);
 
         m_randomNeighbourExplorationCheckbox.Locked = false;
         m_diagonalMovementCheckbox.Locked = false;
@@ -212,21 +228,15 @@ public class PathfindWorld : World
         float i_deltaTime
     )
     {
-        m_solveTimeAccumulator += i_deltaTime;
-        if(m_solveTimeAccumulator >= m_solveTimeStep)
+        m_solveTimeAccumulator = 0.0f;
+        m_solver.SolveNextStep();
+        if(m_solver.Result != GraphSolveResult.InProgress)
         {
-            m_solveTimeAccumulator = 0.0f;
-            m_solver.SolveNextStep();
-            if(m_solver.Result != GraphSolveResult.InProgress)
-            {
-                m_worldState = WorldState.Finished;
-                m_statusText.Text = "Status: Done";
-                m_statusText.SetBaseWidthMult(0.115f);
-                m_statusText.Color = Color.Red;
+            m_worldState = WorldState.Finished;
+            m_infoPanel.SetStatusText("Done", Color.Green);
 
-                ClearExploredTiles();
-            }
-        }
+            ClearExploredTiles();
+        }      
     }
 
     //-----------------------
@@ -260,8 +270,7 @@ public class PathfindWorld : World
             {
                 m_tiles[clickedTileX, clickedTileY].State = TileState.Start;
                 m_startPos = new Vector2Int(clickedTileX, clickedTileY);
-                m_statusText.Text = "Status: Goal";
-                m_statusText.SetBaseWidthMult(0.11f);
+                m_infoPanel.SetStatusText("Choose Goal", Color.White);
                 m_worldState = WorldState.RouteSelectionGoal;
             }
             else if(m_worldState == WorldState.RouteSelectionGoal)
@@ -275,8 +284,7 @@ public class PathfindWorld : World
 
                 m_solver = SolverFactory.CreateSolver(m_algorithm, ref m_tiles, m_startPos, m_goalPos, m_diagonalMovement, m_randomNeighbourExploration);
                 m_worldState = WorldState.Pathfinding;
-                m_statusText.SetBaseWidthMult(0.115f);
-                m_statusText.Text = "Status: Solve";
+                m_infoPanel.SetStatusText("Solving", Color.SkyBlue);
 
                 m_randomNeighbourExplorationCheckbox.Locked = true;
                 m_diagonalMovementCheckbox.Locked = true;
@@ -294,23 +302,43 @@ public class PathfindWorld : World
             return;
         }
 
+        bool inputMade = false;
+        TileState stateToSet = TileState.Invalid;
         if (Raylib.IsMouseButtonDown(MouseButton.Left))
         {
-           
-            m_tiles[clickedTileX, clickedTileY].State = TileState.Closed;
-            m_tiles[clickedTileX, clickedTileY].m_dirty = true;
+           inputMade = true;
+           stateToSet = TileState.Closed;
         }
         else if (Raylib.IsMouseButtonDown(MouseButton.Right))
         {
-            m_tiles[clickedTileX, clickedTileY].State = TileState.Open;
-            m_tiles[clickedTileX, clickedTileY].m_dirty = true;
+           inputMade = true;
+           stateToSet = TileState.Open;
+        }
+
+        if(inputMade)
+        {
+            //m_tiles[clickedTileX, clickedTileY].State = stateToSet;
+            //m_tiles[clickedTileX, clickedTileY].m_dirty = true;
+
+            for(int x = -m_brushRadius; x <= m_brushRadius; x++)
+            {
+                for(int y = -m_brushRadius; y <= m_brushRadius; y++)
+                {
+                    int tileX = clickedTileX + x;
+                    int tileY = clickedTileY + y;
+                    if(tileX >= 0 && tileX < c_gridSize && tileY >= 0 && tileY < c_gridSize)
+                    {
+                        m_tiles[tileX, tileY].m_dirty = true;
+                        m_tiles[tileX, tileY].State = stateToSet;
+                    }
+                }
+            }
         }
 
         if(Raylib.IsKeyPressed(KeyboardKey.Enter))
         {
             m_worldState = WorldState.RouteSelectionStart;
-            m_statusText.Text = "Status: Start";
-            m_statusText.SetBaseWidthMult(0.115f);
+            m_infoPanel.SetStatusText("Choose Start", Color.White);
         }
     }
 
