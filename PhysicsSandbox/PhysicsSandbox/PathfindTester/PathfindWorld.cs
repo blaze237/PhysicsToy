@@ -16,20 +16,24 @@ namespace PhysicsSandbox.PathfindTester;
 
 public class PathfindWorld : World
 {
+    private const int c_defaultGridSize = 50;
+    private const int c_maxBrushRadius = 5;
+
+    // Common grid sizes that divide evenly into screen widths of 500, 1000, 1500 and 2500
+    private static readonly int[] c_gridSizeOptions = [10, 25, 50, 100, 125, 250]; 
+
     // Members
-    private const int c_gridSize = 100;
-    private float m_solveTimeStep = 0.1f;
-    private float m_solveTimeAccumulator = 0.0f;
-    private List2D<Tile> m_tiles = new List2D<Tile>(c_gridSize, c_gridSize);
+    private int m_gridSize = c_defaultGridSize;
+    private List2D<Tile> m_tiles;
     private WorldState m_worldState = WorldState.CreateObstacles;
     private Vector2Int m_startPos = new(-1, -1);
     private Vector2Int m_goalPos = new(-1, -1); 
     private GraphSolver? m_solver;
     private Algorithm m_algorithm = Algorithm.BFS;
     private InfoPanel_PathWorld m_infoPanel = new();
-    private bool m_randomNeighbourExploration = false;
-    private bool m_diagonalMovement = false;
-    private int m_brushRadius = 1; // Radius 0 -> single tile, 1 -> 3x3, 2 -> 5x5, etc.
+    private bool m_randomNeighbourExploration = true;
+    private bool m_diagonalMovement = true;
+    private int m_brushRadius = 0; // Radius 0 -> single tile, 1 -> 3x3, 2 -> 5x5, etc.
 
     //Toolbar ui elements
     private ToolbarText m_algorithmText;
@@ -52,9 +56,10 @@ public class PathfindWorld : World
     //-----------------------
     public PathfindWorld()
     {
-        for(int i = 0; i < c_gridSize; i++)
+        m_tiles = new List2D<Tile>(m_gridSize, m_gridSize);
+        for(int i = 0; i < m_gridSize; i++)
         {
-            for(int j = 0; j < c_gridSize; j++)
+            for(int j = 0; j < m_gridSize; j++)
             {
                 m_tiles[i, j] = new Tile();
             }
@@ -67,22 +72,54 @@ public class PathfindWorld : World
         UIManager.Instance.Toolbar.AddButton(" Reset", 0.06f, Reset);     
         UIManager.Instance.Toolbar.AddSlider(0.1f, Program.c_fixedTimeStep, 0.00004f, Program.c_fixedTimeStep, (value) => { Program.c_fixedTimeStep = value; }, "Speed");
         //Int slider for brush radius
-        ToolbarSlider brushSlider = UIManager.Instance.Toolbar.AddSlider(0.125f, 0, 5, 0, (value) => { m_brushRadius = (int)value; }, "Brush Rad", 0.15f);
+        ToolbarSlider brushSlider = UIManager.Instance.Toolbar.AddSlider(0.125f, 0, c_maxBrushRadius, 0, (value) => { m_brushRadius = (int)value; }, "Brush Rad", 0.15f);
         brushSlider.StepSize = 1f;
+        //Int slider for grid size
+        ToolbarSlider gridSizeSlider = UIManager.Instance.Toolbar.AddSlider(0.125f, 0, c_gridSizeOptions.Length -1, 2, (value) => {OnGridSizeChanged((int)value); }, "Grid Size", 0.15f);
+        gridSizeSlider.StepSize = 1f;
+    }
+    
+
+    //---------------------------------
+    private void OnGridSizeChanged
+    (
+        int i_newSize
+    )
+    {
+        if(m_worldState != WorldState.CreateObstacles)
+        {
+            return;
+            //Override the slider back to the old value (or disable the slider when pathfind starts/)
+            //maintain a more constant border size by scaling the tiles?
+        }
+
+        m_gridSize = c_gridSizeOptions[i_newSize];
+        m_tiles = new List2D<Tile>(m_gridSize, m_gridSize);
+        for(int i = 0; i < m_gridSize; i++)
+        {
+            for(int j = 0; j < m_gridSize; j++)
+            {
+                m_tiles[i, j] = new Tile();
+                m_tiles[i, j].State = TileState.Open;
+                m_tiles[i, j].m_dirty = true;
+            }
+        }
+
+        m_renderer = new TileRenderer(m_gridSize, Program.c_screenWidth, Program.c_screenHeight);
     }
 
     //-----------------------
     public override Renderer CreateRenderer()
     {
-        return new TileRenderer(c_gridSize, Program.c_screenWidth, Program.c_screenHeight);
+        return new TileRenderer(m_gridSize, Program.c_screenWidth, Program.c_screenHeight);
     }
 
     //-----------------------
     public override void Init()
     {
-        for (int i = 0; i < c_gridSize; i++)
+        for (int i = 0; i < m_gridSize; i++)
         {
-            for (int j = 0; j < c_gridSize; j++)
+            for (int j = 0; j < m_gridSize; j++)
             {
                 m_tiles[i, j].State = TileState.Open;
                 m_tiles[i, j].m_dirty = true;
@@ -144,9 +181,9 @@ public class PathfindWorld : World
         }
 
          //Update tile colours
-        for (int i = 0; i < c_gridSize; i++)
+        for (int i = 0; i < m_gridSize; i++)
         {
-            for(int j = 0; j < c_gridSize; j++)
+            for(int j = 0; j < m_gridSize; j++)
             {
                 if (m_tiles[i, j].m_dirty)
                 {
@@ -179,9 +216,9 @@ public class PathfindWorld : World
             return;
         }
 
-        for (int i = 0; i < c_gridSize; i++)
+        for (int i = 0; i < m_gridSize; i++)
         {
-            for (int j = 0; j < c_gridSize; j++)
+            for (int j = 0; j < m_gridSize; j++)
             {
                 if(m_tiles[i,j].State == TileState.Closed)
                 {
@@ -196,9 +233,9 @@ public class PathfindWorld : World
     private void Reset()
     {
         //Clear pathfinding state but keep obstacles
-        for (int i = 0; i < c_gridSize; i++)
+        for (int i = 0; i < m_gridSize; i++)
         {
-            for (int j = 0; j < c_gridSize; j++)
+            for (int j = 0; j < m_gridSize; j++)
             {
                 if(m_tiles[i,j].State != TileState.Open && m_tiles[i,j].State != TileState.Closed)
                 {
@@ -214,7 +251,6 @@ public class PathfindWorld : World
         //Reset solver
         m_solver = null;
         m_worldState = WorldState.CreateObstacles;
-        m_solveTimeAccumulator = 0.0f;
 
         m_infoPanel.SetStatusText("Obstacles", Color.White);
 
@@ -228,7 +264,6 @@ public class PathfindWorld : World
         float i_deltaTime
     )
     {
-        m_solveTimeAccumulator = 0.0f;
         m_solver.SolveNextStep();
         if(m_solver.Result != GraphSolveResult.InProgress)
         {
@@ -242,9 +277,9 @@ public class PathfindWorld : World
     //-----------------------
     void ClearExploredTiles()
     {
-        for (int i = 0; i < c_gridSize; i++)
+        for (int i = 0; i < m_gridSize; i++)
         {
-            for (int j = 0; j < c_gridSize; j++)
+            for (int j = 0; j < m_gridSize; j++)
             {
                 if(m_tiles[i, j].State == TileState.Explored)
                 {
@@ -261,7 +296,7 @@ public class PathfindWorld : World
         if (Raylib.IsMouseButtonPressed(MouseButton.Left))
         {
             GetTileCoordsFromScreenCoords(Raylib.GetMousePosition(), out int clickedTileX, out int clickedTileY);
-            if (clickedTileX < 0 || clickedTileX >= c_gridSize || clickedTileY < 0 || clickedTileY >= c_gridSize)
+            if (clickedTileX < 0 || clickedTileX >= m_gridSize || clickedTileY < 0 || clickedTileY >= m_gridSize)
             {
                 return;
             }
@@ -296,12 +331,6 @@ public class PathfindWorld : World
     //-----------------------
     private void UpdateObstacleCreation()
     {
-        GetTileCoordsFromScreenCoords(Raylib.GetMousePosition(), out int clickedTileX, out int clickedTileY);
-        if (clickedTileX < 0 || clickedTileX >= c_gridSize || clickedTileY < 0 || clickedTileY >= c_gridSize)
-        {
-            return;
-        }
-
         bool inputMade = false;
         TileState stateToSet = TileState.Invalid;
         if (Raylib.IsMouseButtonDown(MouseButton.Left))
@@ -315,6 +344,12 @@ public class PathfindWorld : World
            stateToSet = TileState.Open;
         }
 
+        GetTileCoordsFromScreenCoords(Raylib.GetMousePosition(), out int clickedTileX, out int clickedTileY);
+        if (clickedTileX < 0 || clickedTileX >= m_gridSize || clickedTileY < 0 || clickedTileY >= m_gridSize)
+        {
+            return;
+        }
+
         if(inputMade)
         {
             //m_tiles[clickedTileX, clickedTileY].State = stateToSet;
@@ -326,7 +361,7 @@ public class PathfindWorld : World
                 {
                     int tileX = clickedTileX + x;
                     int tileY = clickedTileY + y;
-                    if(tileX >= 0 && tileX < c_gridSize && tileY >= 0 && tileY < c_gridSize)
+                    if(tileX >= 0 && tileX < m_gridSize && tileY >= 0 && tileY < m_gridSize)
                     {
                         m_tiles[tileX, tileY].m_dirty = true;
                         m_tiles[tileX, tileY].State = stateToSet;
@@ -378,7 +413,9 @@ public class PathfindWorld : World
         out int o_tileY
     )
     {
-        o_tileX = i_screenPos.X / ((TileRenderer)m_renderer).TileSize;
-        o_tileY = i_screenPos.Y / ((TileRenderer)m_renderer).TileSize;
+        //Account for the offset from centering the grid
+        var tileRenderer = (TileRenderer)m_renderer;
+        o_tileX = (i_screenPos.X - tileRenderer.Offset) / tileRenderer.TileSize;
+        o_tileY = (i_screenPos.Y - tileRenderer.Offset) / tileRenderer.TileSize;
     }
 }

@@ -40,7 +40,7 @@ class InfoPanel_PathWorld : WorldUIManager
     public void Init()
     {
 
-        m_elements.Add(UIManager.Instance.CreateAndRegisterRoundedBox_Relative(new Vector2(0.575f, 0.025f), new Vector2(0.4f, 0.65f), new Color(0, 0, 0, 128)));
+        m_elements.Add(UIManager.Instance.CreateAndRegisterRoundedBox_Relative(new Vector2(0.575f, 0.025f), new Vector2(0.4f, 0.475f), new Color(0, 0, 0, 128)));
         // Shift first element down by 25%
         m_elements.Add(UIManager.Instance.CreateAndRegisterText_Relative("Instructions:", Color.White, FontStyle.Bold, new Vector2(0.6f, 0.05f), 20, 1));
         m_elements.Add(UIManager.Instance.CreateAndRegisterText_Relative("- Place obstacles with LMB. Right click to remove.", Color.White, FontStyle.Regular, new Vector2(0.6f, 0.08125f), 20, 1));

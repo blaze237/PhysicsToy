@@ -11,12 +11,11 @@ class TileRenderer : Renderer
     // Members
     public int GridSize { get; }
     public int TileSize { get; set; }
+    public int Offset { get; } = 0;
     public List2D<Color> TileColours {get; set;}
-    private float m_screenWidth;
-    private float m_screenHeight;
      
     //Todo make this a fraction of the screen size
-    private const int m_borderWidth = 2;
+    private readonly int m_borderWidth = UIScaler.ScaleValue(2);
 
     // Methods
     //-------------------------------------
@@ -29,8 +28,6 @@ class TileRenderer : Renderer
     {
         GridSize = i_gridSize;
         TileColours = new List2D<Color>(GridSize, GridSize);
-        m_screenHeight = i_screenHeight;
-        m_screenWidth = i_screenWidth;
 
         for (int y = 0; y < GridSize; y++)
         {
@@ -40,10 +37,24 @@ class TileRenderer : Renderer
             }
         }
 
-        //TODO support non square screens by keeping the grid square and centering it on the screen, for now just assert that the screen is square and that the tile size is an integer
-        DebugUtils.Assert((i_screenWidth % i_gridSize) == 0, "Screen width must be divisible by size X");
         DebugUtils.Assert(i_screenHeight == i_screenWidth, "Screen height must be equal to screen width");
-        TileSize = i_screenWidth / GridSize;
+
+        if((i_screenWidth % i_gridSize) != 0)
+        {
+            //Get the nearest multiple of grid size (round down so it fits)
+            int nearestMultiple = (int)Math.Floor(i_screenWidth / (float)i_gridSize);
+            TileSize = nearestMultiple;
+
+            //Calculate the dimensions of the grid in pixels
+            int gridWidth = nearestMultiple * i_gridSize;
+
+            //Calculate the offset to center the grid
+            Offset = (i_screenWidth - gridWidth) / 2;    
+        }
+        else
+        {
+            TileSize = i_screenWidth / GridSize;
+        }
 
     }
 
@@ -57,10 +68,8 @@ class TileRenderer : Renderer
         {
             for (int x = 0; x < GridSize; x++)
             {
-
-                int drawSizeX = x < GridSize - 1 ? TileSize - m_borderWidth : TileSize;
-                int drawSizeY = y < GridSize - 1 ? TileSize - m_borderWidth : TileSize;
-                Raylib.DrawRectangle(x * TileSize, y * TileSize, drawSizeX, drawSizeY, TileColours[x, y]);
+                int drawSize = TileSize - m_borderWidth;
+                Raylib.DrawRectangle(x * TileSize + Offset, y * TileSize + Offset, drawSize, drawSize, TileColours[x, y]);
             }
         }
     }
