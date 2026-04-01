@@ -9,12 +9,25 @@ public static class DebugUtils
     public static void Assert
     (
         bool condition, 
-        string message = ""
+        string message
     )
     {
         if (!condition) 
         {
             Console.WriteLine($"Assertion failed: {message}");
+            System.Diagnostics.Debugger.Break();
+        }
+    }
+
+     //-------------------------------
+    [Conditional("DEBUG")]
+    public static void Assert
+    (
+        bool condition
+    )
+    {
+        if (!condition) 
+        {
             System.Diagnostics.Debugger.Break();
         }
     }

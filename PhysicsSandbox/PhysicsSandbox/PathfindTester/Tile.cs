@@ -1,6 +1,6 @@
 ﻿namespace PhysicsSandbox.PathfindTester;
 //-----------------------
-public enum TileState
+public enum TileState : byte
 {
     Open,
     Closed,

@@ -83,6 +83,11 @@ public class ToolbarSlider : ToolbarElement
         float i_deltaTime
     )
     {        
+        if (Locked)
+        {
+            return;
+        }
+        
         if(Raylib.IsMouseButtonPressed(MouseButton.Left))
         {
             Vector2 mousePos = Raylib.GetMousePosition();

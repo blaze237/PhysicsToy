@@ -16,7 +16,6 @@ public class ToolbarCheckbox : ToolbarElement
     private Color m_selectedColor = Color.SkyBlue;
     private Color m_unselectedColor = Color.LightGray;
     private Color m_labelColor = Color.White;
-    public bool Locked { get; set; } = false;
 
     //-------------
     public ToolbarCheckbox

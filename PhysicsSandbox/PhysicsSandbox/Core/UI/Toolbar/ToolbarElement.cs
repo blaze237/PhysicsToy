@@ -10,6 +10,7 @@ public abstract class ToolbarElement
     //Members
     public Rectangle RenderBounds { get; set; } 
     public int BaseWidth { get; private set; }
+    public bool Locked { get; set; } = false;
     private bool m_enabled = true;
     public bool Enabled 
     { 

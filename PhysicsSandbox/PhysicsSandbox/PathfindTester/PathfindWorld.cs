@@ -34,6 +34,7 @@ public class PathfindWorld : World
     private bool m_randomNeighbourExploration = true;
     private bool m_diagonalMovement = true;
     private int m_brushRadius = 0; // Radius 0 -> single tile, 1 -> 3x3, 2 -> 5x5, etc.
+    private ToolbarSlider m_gridSizeSlider;
 
     //Toolbar ui elements
     private ToolbarText m_algorithmText;
@@ -75,8 +76,8 @@ public class PathfindWorld : World
         ToolbarSlider brushSlider = UIManager.Instance.Toolbar.AddSlider(0.125f, 0, c_maxBrushRadius, 0, (value) => { m_brushRadius = (int)value; }, "Brush Rad", 0.15f);
         brushSlider.StepSize = 1f;
         //Int slider for grid size
-        ToolbarSlider gridSizeSlider = UIManager.Instance.Toolbar.AddSlider(0.125f, 0, c_gridSizeOptions.Length -1, 2, (value) => {OnGridSizeChanged((int)value); }, "Grid Size", 0.15f);
-        gridSizeSlider.StepSize = 1f;
+        m_gridSizeSlider = UIManager.Instance.Toolbar.AddSlider(0.125f, 0, c_gridSizeOptions.Length -1, 2, (value) => {OnGridSizeChanged((int)value); }, "Grid Size", 0.15f);
+        m_gridSizeSlider.StepSize = 1f;
     }
     
 
@@ -99,9 +100,7 @@ public class PathfindWorld : World
         {
             for(int j = 0; j < m_gridSize; j++)
             {
-                m_tiles[i, j] = new Tile();
-                m_tiles[i, j].State = TileState.Open;
-                m_tiles[i, j].m_dirty = true;
+                m_tiles[i, j] = new Tile() { State = TileState.Open, m_dirty = true };
             }
         }
 
@@ -256,6 +255,7 @@ public class PathfindWorld : World
 
         m_randomNeighbourExplorationCheckbox.Locked = false;
         m_diagonalMovementCheckbox.Locked = false;
+        m_gridSizeSlider.Locked = false;
     }
 
     //-----------------------
@@ -323,6 +323,7 @@ public class PathfindWorld : World
 
                 m_randomNeighbourExplorationCheckbox.Locked = true;
                 m_diagonalMovementCheckbox.Locked = true;
+                m_gridSizeSlider.Locked = true;
             }
             m_tiles[clickedTileX, clickedTileY].m_dirty = true;
         }
