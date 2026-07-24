@@ -67,6 +67,6 @@ public class ToolbarButton : ToolbarElement
         Raylib.DrawRectangleRec(RenderBounds, color);
         Vector2 position = RenderBounds.Position;
         position += new Vector2(UIScaler.ScaleValue(0.5f), UIScaler.ScaleValue(0.5f));
-        Raylib.DrawTextEx(FontManager.GetFontForStyle(FontManager.FontStyle.Regular), Label, position, UIScaler.ScaleValue(c_fontSize), 0, m_labelColor);
+        Raylib.DrawTextEx(FontManager.c_defaultFont, Label, position, UIScaler.ScaleValue(c_fontSize), 0, m_labelColor);
     }
 }

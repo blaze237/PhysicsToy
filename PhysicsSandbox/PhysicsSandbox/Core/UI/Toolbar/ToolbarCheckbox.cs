@@ -46,7 +46,7 @@ public class ToolbarCheckbox : ToolbarElement
         Raylib.DrawRectangleLinesEx(m_boxBounds, UIScaler.ScaleValue(2), Color.Black);
 
         position.X += m_boxBounds.Width + UIScaler.ScaleValue(10);
-        Raylib.DrawTextEx(FontManager.GetFontForStyle(FontManager.FontStyle.Regular), m_label, position, UIScaler.ScaleValue(c_fontSize), 0, m_labelColor);
+        Raylib.DrawTextEx(FontManager.c_defaultFont, m_label, position, UIScaler.ScaleValue(c_fontSize), 0, m_labelColor);
     }
 
     //-------------

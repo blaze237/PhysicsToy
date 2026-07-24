@@ -30,8 +30,11 @@ public class ToolbarText : ToolbarElement
     {
         base.Render();
         
+        //Ignore below, we absololutley do lmao use MeasureText dawg
+
+
         //NOTE: We dont really have any way to actually enforce that the text doesnt exceed the bounds of the toolbar element so we just have to hope for the best that sufficient width is allocated
-        Raylib.DrawTextEx(FontManager.GetFontForStyle(FontManager.FontStyle.Regular), Text, RenderBounds.Position, UIScaler.ScaleValue(c_fontSize), 0, Color);
+        Raylib.DrawTextEx(FontManager.c_defaultFont, Text, RenderBounds.Position, UIScaler.ScaleValue(c_fontSize), 0, Color);
     }
 
   

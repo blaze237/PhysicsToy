@@ -123,6 +123,22 @@ public sealed class UIManager
         return m_elements[i_id] as T;
     }
 
+    //TODO make all the below static methods of the appropriate classes
+
+    public UIElementID CreateAndRegisterTextInput
+    (
+        Action<string> i_onConfirm, 
+        Action i_onCancel, 
+        Vector2Int i_size, 
+        string i_label,
+        string i_text = "",
+        UILayerID i_layerID = 0
+    )
+    {
+        TextInput textInput = new TextInput(m_nextID++, i_onConfirm, i_onCancel, i_size, i_label, i_text);
+        return RegisterElement(textInput, i_layerID);
+    }
+
     //-------------
     public UIElementID CreateAndRegisterCheckbox
     (

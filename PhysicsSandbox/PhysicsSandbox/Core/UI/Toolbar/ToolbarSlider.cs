@@ -71,7 +71,7 @@ public class ToolbarSlider : ToolbarElement
             Vector2 position = RenderBounds.Position;
             position.X += RenderBounds.Width * m_textOffsetFraction;
             position += new Vector2(0, UIScaler.ScaleValue(0.5f));
-            Raylib.DrawTextEx(FontManager.GetFontForStyle(FontManager.FontStyle.Regular), m_label, position, UIScaler.ScaleValue(c_fontSize), 0, Color.White);
+            Raylib.DrawTextEx(FontManager.c_defaultFont, m_label, position, UIScaler.ScaleValue(c_fontSize), 0, Color.White);
         }
         
         base.Render();

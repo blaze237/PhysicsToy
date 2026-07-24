@@ -78,8 +78,9 @@ public class PathfindWorld : World
         //Int slider for grid size
         m_gridSizeSlider = UIManager.Instance.Toolbar.AddSlider(0.125f, 0, c_gridSizeOptions.Length -1, 2, (value) => {OnGridSizeChanged((int)value); }, "Grid Size", 0.15f);
         m_gridSizeSlider.StepSize = 1f;
+
+        UIManager.Instance.CreateAndRegisterTextInput((value) => { GridSerialiser.Serialise(m_tiles, value + "bin"); }, () => { }, new Vector2Int(500, 250), "Save Layout As:","", 2);
     }
-    
 
     //---------------------------------
     private void OnGridSizeChanged
@@ -345,6 +346,16 @@ public class PathfindWorld : World
            stateToSet = TileState.Open;
         }
 
+        //Test only - save/load grid
+        if(Raylib.IsKeyPressed(KeyboardKey.S))
+        {
+            GridSerialiser.Serialise(m_tiles, "saved_grid.bin");
+        }
+        else if(Raylib.IsKeyPressed(KeyboardKey.L))
+        {
+            GridSerialiser.Deserialise("saved_grid.bin", out m_tiles);
+        }
+
         GetTileCoordsFromScreenCoords(Raylib.GetMousePosition(), out int clickedTileX, out int clickedTileY);
         if (clickedTileX < 0 || clickedTileX >= m_gridSize || clickedTileY < 0 || clickedTileY >= m_gridSize)
         {
@@ -353,9 +364,6 @@ public class PathfindWorld : World
 
         if(inputMade)
         {
-            //m_tiles[clickedTileX, clickedTileY].State = stateToSet;
-            //m_tiles[clickedTileX, clickedTileY].m_dirty = true;
-
             for(int x = -m_brushRadius; x <= m_brushRadius; x++)
             {
                 for(int y = -m_brushRadius; y <= m_brushRadius; y++)

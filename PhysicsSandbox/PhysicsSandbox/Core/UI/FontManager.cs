@@ -11,24 +11,24 @@ public class FontManager
         Italic
     }
     //Members
-    private static readonly Font m_defaultFont = Raylib.LoadFont("Assets/Roboto-Regular.ttf");
-    private static readonly Font m_defaultFontBold = Raylib.LoadFont("Assets/Roboto-Bold.ttf");
-    private static readonly Font m_defaultFontItalic = Raylib.LoadFont("Assets/Roboto-Italic.ttf");
+    public static readonly Font c_defaultFont = Raylib.LoadFont("Assets/Roboto-Regular.ttf");
+    public static readonly Font c_defaultFontBold = Raylib.LoadFont("Assets/Roboto-Bold.ttf");
+    public static readonly Font c_defaultFontItalic = Raylib.LoadFont("Assets/Roboto-Italic.ttf");
 
     //-------------------
     public static Font GetFontForStyle
     (
-        FontStyle i_style
+        FontStyle i_style //Todo: Add more font family
     )
     {
-        Font font = m_defaultFont;
+        Font font = c_defaultFont;
         switch (i_style)
         {
             case FontStyle.Bold:
-                font = m_defaultFontBold;
+                font = c_defaultFontBold;
                 break;
             case FontStyle.Italic:
-                font = m_defaultFontItalic;
+                font = c_defaultFontItalic;
                 break;
         }
         return font;
